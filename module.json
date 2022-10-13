@@ -20,10 +20,16 @@
 
   "packs": [
     {
-      "label": "Mass Import - Macros",
+      "label": "Macros - Mass Import",
       "type": "Macro",
-      "name": "mass-import-macros",
-      "path": "packs/mass-import-macros.db"
+      "name": "macros-mass-import",
+      "path": "packs/macros-mass-import.db"
+    },
+    {
+      "label": "Journal - Mass Import",
+      "type": "JournalEntry",
+      "name": "journal-mass-import",
+      "path": "packs/journal-mass-import.db"
     }  
   ],
 

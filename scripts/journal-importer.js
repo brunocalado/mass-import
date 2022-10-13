@@ -47,6 +47,12 @@ export class journalImporter {
     const journalName = html.find("input[id=journal_name").val();  
     const folderPath = html.find("input[name=folder-path]").val();  
     const importType = parseInt( html.find("select[name=select_import_type]").val() );  
+    //video
+    const videoVolume = html.find("input[id=video_volume]").val();
+    const videoShowVideoControls = html.find("input[name=video_show_video_controls]")[0].checked;
+    const videoAutoplay = html.find("input[name=video_autoplay]")[0].checked;
+    const videoLoop = html.find("input[name=video_loop]")[0].checked;
+    
     let journalData = {};
 
     // Split files
@@ -59,6 +65,10 @@ export class journalImporter {
     // Data
     journalData.journalName = journalName;
     journalData.folderID = folderID;
+    journalData.videoVolume = videoVolume;
+    journalData.videoShowVideoControls = videoShowVideoControls;
+    journalData.videoLoop = videoLoop;
+    journalData.videoAutoplay = videoAutoplay;
     
     /* Import Types
     0 - Each Image One Page
@@ -161,6 +171,29 @@ export class journalImporter {
   
   // 
   static async oneVideoOnePage(files, data) {
+    let images = [];
+    for (let videoPath of files) {
+      images.push({
+        "name": common.splitPath(videoPath),
+        "type": "video",
+        "src": videoPath,
+        "title": {
+          "show": false
+        },
+        "video": {
+          "controls": data.videoShowVideoControls,
+          "volume": data.videoVolume,
+          "loop": data.videoLoop,
+          "autoplay": data.videoAutoplay
+        }      
+      })
+    }    
+
+    await JournalEntry.create({
+      name: data.journalName,
+      folder: data.folderID,
+      pages: images      
+    });      
   }    
     
 } // END CLASS
