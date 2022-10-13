@@ -1,7 +1,7 @@
 # Mass Import
-This module makes easier to import data into the world. It'll read a folder with images, videos and PDFs and turn then into Foundry VTT entities.
+This module makes easier to import data into the world. It'll read a folder with images, videos or PDFs and turn then into Foundry VTT entities.
 
-Examples
+## Examples
 - Read a folder with images and make all of them scenes.
 - Read a folder with images and turn all of them into a deck.
 - Read a folder with images and create one page for image.
@@ -19,16 +19,30 @@ Examples
   <img width="700" src="docs/docs-example-scene.webp">
 </p>
 
-## Journal Example
+## Journal Examples
+
+### Journal Image Example
 <p align="center">
-  <img width="700" src="docs/docs-example-journal.webp">
+  <img width="700" src="docs/docs-example-journal-image.webp">
+</p>
+
+### Journal Video Example
+<p align="center">
+  <img width="700" src="docs/docs-example-journal-video.webp">
+</p>
+
+### Journal PDF Example
+<p align="center">
+  <img width="700" src="docs/docs-example-journal-pdf.webp">
 </p>
 
 # Instalation
 You can install this module using the manifest: https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json
 
 # How To
-After install and activate the module go to the compendiums and search for **Mass Import - Macros**.
+After install and activate the module go to the compendiums and search for **Macros - Mass Import**. 
+
+If you need more information go the the **Journal - Mass Import** and read the journal with instructions in there.
 
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/mass-import/issues)
