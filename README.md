@@ -6,6 +6,8 @@ Examples
 - Read a folder with images and turn all of them into a deck.
 - Read a folder with images and create one page for image.
 - Read a folder with images and turn all of them into one text page.
+- Read a folder with PDFs and turn into journal pages
+- Read a folder with Videos and turn into journal pages
 
 ## Macros    
 <p align="center">
