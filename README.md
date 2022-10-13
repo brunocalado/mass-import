@@ -1,5 +1,5 @@
 # Mass Import
-This module makes easier to import images into the world.
+This module makes easier to import data into the world. It'll read a folder with images, videos and PDFs and turn then into Foundry VTT entities.
 
 Examples
 - Read a folder with images and make all of them scenes.
@@ -14,10 +14,14 @@ Examples
   <img width="700" src="docs/docs-macros.webp">
 </p>
 
-
 ## Scene Example
 <p align="center">
-  <img width="700" src="docs/docs-macros.webp">
+  <img width="700" src="docs/docs-example-scene.webp">
+</p>
+
+## Journal Example
+<p align="center">
+  <img width="700" src="docs/docs-example-journal.webp">
 </p>
 
 # Instalation

@@ -63,6 +63,8 @@ export class journalImporter {
     /* Import Types
     0 - Each Image One Page
     1 - All Images into Text Page
+    2 - PDF
+    3 - Video
     */
     switch(importType) {
       case 0:
@@ -71,6 +73,12 @@ export class journalImporter {
       case 1:
         this.allImagesToOneTextPage(files, journalData);        
         break;   
+      case 2:
+        this.folderToJournalPDF(files, journalData);        
+        break;   
+      case 3:
+        this.oneVideoOnePage(files, journalData);        
+        break;           
       default:
         // code block
     }    
@@ -129,6 +137,31 @@ export class journalImporter {
       pages: pages      
     });    
   } // END oneImageOnePage
+
+  // 
+  static async folderToJournalPDF(files, data) {
+    let images = [];
+    for (let pdfPath of files) {
+      images.push({
+        "name": common.splitPath(pdfPath),
+        "type": "pdf",
+        "src": pdfPath,
+        "title": {
+          "show": false
+        }
+      })
+    }
+
+    await JournalEntry.create({
+      name: data.journalName,
+      folder: data.folderID,
+      pages: images      
+    });       
+  }
+  
+  // 
+  static async oneVideoOnePage(files, data) {
+  }    
     
 } // END CLASS
 
