@@ -19,6 +19,12 @@
 	"esmodules": ["./scripts/init.js"],
 
   "packs": [
+    {
+      "label": "Mass Import - Macros",
+      "type": "Macro",
+      "name": "mass-import-macros",
+      "path": "packs/mass-import-macros.db"
+    }  
   ],
 
   "styles": [],
