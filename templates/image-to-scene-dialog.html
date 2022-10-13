@@ -1,0 +1,122 @@
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-spacing:0;}
+  .tg td{
+    border-color:black;
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    padding:2px 2px;
+    word-break:normal;
+  }
+  .tg th{
+    border-color:black;
+    border-style:solid;
+    border-width:1px;
+    font-weight:normal;
+    overflow:hidden;
+    padding: 2px 2px;
+    word-break:normal;
+  }
+  .tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
+</style>
+
+<table>
+<thead>
+  <tr>
+    <th colspan="2">Folder Path</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input name="folder-path" style="width:100%;"></td>
+    <td><button class="picker-button"><i class="fas fa-file-import fa-fw"></i></button></td>
+  </tr>
+</tbody>
+</table>
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-9wq8" colspan="2">Basics</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-9wq8">Background Color</td>
+    <td class="tg-9wq8">Folder Name</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="text" id="background_color" value="#000000"/></td>
+    <td class="tg-9wq8"><input type="text" id="folderName" value='Cenas'/></td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">Navigation</td>
+    <td class="tg-9wq8"></td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="checkbox" name="select_navigation"></td>
+    <td class="tg-9wq8"></td>
+  </tr>
+</tbody>
+</table>
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-9wq8" colspan="2">Grid</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-9wq8">Alpha</td>
+    <td class="tg-9wq8">Distance</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="range" min="0" max="1" value="0" step="0.01" class="slider" id="grid_alpha"></td>
+    <td class="tg-9wq8"><input type="number" min="1" id="grid_distance" value="1"/></td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">Size</td>
+    <td class="tg-9wq8">Type</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="number" min="50" id="grid_size" value="50"/></td>
+    <td class="tg-9wq8">
+      <select name="select_grid_type">
+        <option value="0">Gridless</option>
+        <option value="1" selected>Square</option>
+        <option value="2">Hexagonal Rows - Odd</option>
+        <option value="3">Hexagonal Rows - Even</option>
+        <option value="4">Hexagonal Columns - Odd</option>        
+        <option value="5">Hexagonal Columns - Even</option>                    
+      </select>    
+    </td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">Units</td>
+    <td class="tg-9wq8">Padding</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="text" id="grid_units" value='In'/></td>
+    <td class="tg-9wq8"><input type="range" min="0" max="0.5" value="0" step="0.01" class="slider" id="scene_padding"></td>
+  </tr>
+</tbody>
+</table>
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-9wq8" colspan="2">Lighting</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-9wq8">Token Vision</td>
+    <td class="tg-9wq8">Fog Exploration</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8"><input type="checkbox" name="token_vision"></td>
+    <td class="tg-9wq8"><input type="checkbox" name="fog_exploration"></td>
+  </tr>
+</tbody>
+</table>

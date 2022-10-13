@@ -1,0 +1,33 @@
+{   
+  "id": "mass-import",   
+  "title": "Mass Import",
+  "description": "",   
+  "authors": [
+    {
+      "name": "Mestre Digital",
+      "url": "https://www.youtube.com/c/MestreDigital",
+      "flags": {}
+    }
+  ],
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  
+  "scripts": [],  
+	"esmodules": ["./scripts/init.js"],
+
+  "packs": [
+  ],
+
+  "styles": [],
+
+  "languages": [
+  ],
+  
+  "url": "https://github.com/brunocalado/mass-import",
+  "manifest": "https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json",  
+  "download": "https://codeload.github.com/brunocalado/mass-import/zip/main"
+  
+}
