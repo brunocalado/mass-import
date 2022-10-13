@@ -1,6 +1,6 @@
 {   
   "id": "mass-import",   
-  "title": "Mass Import",
+  "title": "Folder Mass Import",
   "description": "This module makes easier to import data into the world. It'll read a folder with images, videos or PDFs and turn then into Foundry VTT entities.",   
   "authors": [
     {
@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "compatibility": {
     "minimum": "10",
     "verified": "10"

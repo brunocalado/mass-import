@@ -1,4 +1,4 @@
-# Mass Import
+# Folder Mass Import
 This module makes easier to import data into the world. It'll read a folder with images, videos or PDFs and turn then into Foundry VTT entities.
 
 ## Examples
