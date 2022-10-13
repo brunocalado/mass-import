@@ -14,6 +14,11 @@ This module makes easier to import data into the world. It'll read a folder with
   <img width="700" src="docs/docs-macros.webp">
 </p>
 
+## Deck Example
+<p align="center">
+  <img width="700" src="docs/docs-example-deck.webp">
+</p>
+
 ## Scene Example
 <p align="center">
   <img width="700" src="docs/docs-example-scene.webp">
