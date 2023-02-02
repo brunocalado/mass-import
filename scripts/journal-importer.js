@@ -103,12 +103,16 @@ export class journalImporter {
   static async oneImageOnePage(files, data) {
     let images = [];
     for (let imagePath of files) {
+      const imageName = common.splitPath(imagePath);
       images.push({
-        "name": common.splitPath(imagePath),
+        "name": imageName,
         "type": "image",
         "src": imagePath,
         "title": {
           "show": false
+        },
+        "image": {
+          "caption": imageName
         }
       })
     }    
