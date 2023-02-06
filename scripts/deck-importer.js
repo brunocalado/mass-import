@@ -53,7 +53,9 @@ export class deckImporter {
     const folderPath = html.find("input[name=folder-path]").val();  
     const cardBackImage = html.find("input[name=card-back-image]").val();  
     const deckName = html.find("#deck_name")[0].value;  
-
+    const cardWidth = html.find("#card_width")[0].value;  
+    const gridHeight = html.find("#grid_height")[0].value;  
+  
     // 
     let {files} = await FilePicker.browse("data", folderPath);
     
@@ -68,23 +70,46 @@ export class deckImporter {
       // file = imagePath and splitPath(file) = image name
       const imagePath = file;
       const imageName = common.splitPath(imagePath);
-      return {
-        name: imageName,
-        type: 'base',
-        faces: [
-          {
-            img: imagePath,
-            name: imageName,
-          },
-        ],
-        back: {
-          name: '',
-          text: '',
-          img: cardBackImage
-        },      
-        face: 0,
-        origin: deck?.id,
-      };
+
+      if ( cardWidth==0 || gridHeight==0 ) {
+        return {
+          name: imageName,
+          type: 'base',
+          faces: [
+            {
+              img: imagePath,
+              name: imageName,
+            },
+          ],
+          back: {
+            name: '',
+            text: '',
+            img: cardBackImage
+          },      
+          face: 0,
+          origin: deck?.id
+        }; // END RETURN
+      } else {      
+        return {
+          name: imageName,
+          type: 'base',
+          faces: [
+            {
+              img: imagePath,
+              name: imageName,
+            },
+          ],
+          back: {
+            name: '',
+            text: '',
+            img: cardBackImage
+          },      
+          face: 0,
+          origin: deck?.id,
+          width: cardWidth,
+          height: gridHeight        
+        }; // END RETURN
+      } // END ELSE
     });
     
     //create the cards in the deck

@@ -1,3 +1,7 @@
+0.0.5
+- https://github.com/brunocalado/mass-import/issues/1
+- docs
+
 0.0.4
 - add label from images
 
