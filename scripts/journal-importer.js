@@ -72,21 +72,25 @@ export class journalImporter {
     
     /* Import Types
     0 - Each Image One Page
-    1 - All Images into Text Page
-    2 - PDF
-    3 - Video
+    1 - Each Image One Journal Image
+    2 - All Images into Text Page
+    3 - PDF
+    4 - Video
     */
     switch(importType) {
       case 0:
         this.oneImageOnePage(files, journalData);
         break;
       case 1:
+        this.oneImageOneJournalImage(files, journalData);        
+        break;           
+      case 2:
         this.allImagesToOneTextPage(files, journalData);        
         break;   
-      case 2:
+      case 3:
         this.folderToJournalPDF(files, journalData);        
         break;   
-      case 3:
+      case 4:
         this.oneVideoOnePage(files, journalData);        
         break;           
       default:
@@ -114,7 +118,7 @@ export class journalImporter {
         "image": {
           "caption": imageName
         }
-      })
+      });
     }    
 
     await JournalEntry.create({
@@ -123,6 +127,32 @@ export class journalImporter {
       pages: images      
     });    
   } // END oneImageOnePage
+
+  // This will create one journal with one image.
+  static async oneImageOneJournalImage(files, data) {
+    for (let imagePath of files) {
+      var myImage;
+      const imageName = common.splitPath(imagePath);
+      myImage = [{
+        "name": imageName,
+        "type": "image",
+        "src": imagePath,
+        "title": {
+          "show": false
+        },
+        "image": {
+          "caption": imageName
+        }
+      }];
+      await JournalEntry.create({
+        name: data.journalName,
+        folder: data.folderID,
+        pages: myImage      
+      });        
+    }
+  
+  } // END oneImageOnePage
+
 
   // This will create one journal with one text page with all images.
   static async allImagesToOneTextPage(files, data) {

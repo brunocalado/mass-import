@@ -5,6 +5,7 @@ This module makes easier to import data into the world. It'll read a folder with
 - Read a folder with images and make all of them scenes.
 - Read a folder with images and turn all of them into a deck.
 - Read a folder with images and create one page for image.
+- Read a folder with images and create one journal for each image.
 - Read a folder with images and turn all of them into one text page.
 - Read a folder with PDFs and turn into journal pages
 - Read a folder with Videos and turn into journal pages
