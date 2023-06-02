@@ -1,3 +1,6 @@
+0.0.7
+- v11
+
 0.0.6
 - https://github.com/brunocalado/mass-import/issues/2
 - docs

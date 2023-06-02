@@ -59,3 +59,6 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 
 # License and Assets
 - Code license at [LICENSE](LICENSE).
+
+# Mestre Digital
+About this module creator: https://sites.google.com/view/mestredigitalmodules
