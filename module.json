@@ -9,10 +9,10 @@
       "flags": {}
     }
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "compatibility": {
-    "minimum": "10",
-    "verified": "11"
+    "minimum": "12",
+    "verified": "12"
   },
   
   "scripts": [],  
@@ -31,6 +31,19 @@
       "name": "journal-mass-import",
       "path": "packs/journal-mass-import.db"
     }  
+  ],
+
+  "packFolders": [
+    {
+      "name": "Mass Import Folder",
+      "sorting": "a",
+      "color": "#9f1d1d",
+      "packs": [
+        "macros-mass-import",
+        "journal-mass-import"
+      ],
+      "folders": []
+    }
   ],
 
   "styles": [],

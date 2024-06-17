@@ -108,17 +108,23 @@ export class sceneImporter {
       name: common.splitPath(imagePath),
       width: sceneWidth,
       height: sceneHeight,
-      img: imagePath,
-      grid: sceneDefaults.gridSize,
+      background: {
+        src: imagePath
+      },
+      grid: {
+        size: sceneDefaults.gridSize,
+        distance: sceneDefaults.gridDistance,
+        units: sceneDefaults.gridUnits,        
+        type: sceneDefaults.gridType,              
+        alpha: sceneDefaults.gridAlpha        
+      },
+      padding: sceneDefaults.scenePadding,      
       folder: sceneDefaults.folderID,
-      gridDistance: sceneDefaults.gridDistance,
-      gridUnits: sceneDefaults.gridUnits,
-      fogExploration: sceneDefaults.fogExploration,
+      fog: {
+        exploration: sceneDefaults.fogExploration
+      },
       tokenVision: sceneDefaults.tokenVision,
-      gridType: sceneDefaults.gridType,
       backgroundColor: sceneDefaults.backgroundColor,
-      padding: sceneDefaults.scenePadding,
-      gridAlpha: sceneDefaults.gridAlpha,
       navigation: sceneDefaults.navigation
     };
 

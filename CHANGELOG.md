@@ -1,3 +1,8 @@
+0.0.8
+- v12
+- scene fix
+- compedium Folder
+
 0.0.7
 - v11
 
