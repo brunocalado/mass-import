@@ -47,6 +47,9 @@ export class journalImporter {
     const journalName = html.find("input[id=journal_name").val();  
     const folderPath = html.find("input[name=folder-path]").val();  
     const importType = parseInt( html.find("select[name=select_import_type]").val() );  
+    // all images to text
+    const widthName = html.find("input[id=width_name").val();  
+    const heightName = html.find("input[id=height_name").val();  
     //video
     const videoVolume = html.find("input[id=video_volume]").val();
     const videoShowVideoControls = html.find("input[name=video_show_video_controls]")[0].checked;
@@ -65,6 +68,8 @@ export class journalImporter {
     // Data
     journalData.journalName = journalName;
     journalData.folderID = folderID;
+    journalData.widthName = widthName;
+    journalData.heightName = heightName;
     journalData.videoVolume = videoVolume;
     journalData.videoShowVideoControls = videoShowVideoControls;
     journalData.videoLoop = videoLoop;
@@ -159,7 +164,16 @@ export class journalImporter {
     let images = ``;
     let pages = [];
     for (let imagePath of files) {
-      images = images + `<img src=\"${imagePath}\" />`;
+      let tempsize="";
+      if(data.heightName!="" ) {
+        tempsize =  ` height="${data.heightName}"`;
+      }
+      if(data.widthName!="" ) {
+        tempsize = tempsize + ` width="${data.widthName}"`;
+      } 
+
+      images = images + `<img src=\"${imagePath}\" ${tempsize}/>`;
+
     }    
     
     pages.push(

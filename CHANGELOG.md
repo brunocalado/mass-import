@@ -1,3 +1,6 @@
+0.0.9
+- width heigh for journal import
+
 0.0.8
 - v12
 - scene fix
