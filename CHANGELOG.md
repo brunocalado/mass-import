@@ -1,3 +1,6 @@
+0.1.0
+- regenerate thumbnails macro
+
 0.0.9
 - width heigh for journal import
 
