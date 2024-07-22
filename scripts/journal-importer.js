@@ -80,7 +80,8 @@ export class journalImporter {
     1 - Each Image One Journal Image
     2 - All Images into Text Page
     3 - PDF
-    4 - Video
+    4 - Each Video One Video Page
+    5 - All Video Into One Text Page
     */
     switch(importType) {
       case 0:
@@ -98,6 +99,9 @@ export class journalImporter {
       case 4:
         this.oneVideoOnePage(files, journalData);        
         break;           
+      case 5:
+        this.allVideoToOneTextPage(files, journalData);        
+        break;          
       default:
         // code block
     }    
@@ -243,6 +247,43 @@ export class journalImporter {
       pages: images      
     });      
   }    
+    
+  // This will create one journal with one text page with all images.
+  static async allVideoToOneTextPage(files, data) {
+    let videos = ``;
+    let pages = [];
+    for (let imagePath of files) {
+      let tempsize="";
+      if(data.heightName!="" ) {
+        tempsize =  ` height="${data.heightName}"`;
+      }
+      if(data.widthName!="" ) {
+        tempsize = tempsize + ` width="${data.widthName}"`;
+      } 
+
+      videos = videos + `<video ${tempsize} src="${imagePath}" controls></video><p></p>`;
+
+    }    
+    
+    pages.push(
+      {
+        "name": 'My Videos',
+        "type": "text",
+        "title": {
+          "show": false
+        },
+        "text": {
+          "content": videos
+        },        
+      }    
+    );
+    
+    await JournalEntry.create({
+      name: data.journalName,
+      folder: data.folderID,
+      pages: pages      
+    });    
+  } // END oneImageOnePage    
     
 } // END CLASS
 
