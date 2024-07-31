@@ -10,7 +10,12 @@ export class deckImporter {
     
     const templateData = {basePath: basePath}; 
     const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-deck-dialog.html`, templateData );                
-    
+    const sourceData = {
+      activeSource: 'data', // data is default
+      activeBucket: '',
+      path: ''
+    }
+
     new Dialog({
       title: `Image Folder To Deck`,
       content: dialogTemplate,
@@ -18,7 +23,7 @@ export class deckImporter {
         roll: {
           label: "Create",
           callback: (html) => {
-            this.createDeck(html);
+            this.createDeck(html, sourceData);
           }
         }, 
         cancel: {
@@ -33,6 +38,9 @@ export class deckImporter {
             new FilePicker({
                 type: "folder",
                 callback: function (path) {
+                  sourceData.activeSource = this.activeSource;
+                  sourceData.activeBucket = this.activeSource==='s3' ? this.sources.s3.bucket : '';
+                  sourceData.path = path;
                   html.find("input[name=folder-path]").val(path);
             }}).render(true);
         });
@@ -49,7 +57,7 @@ export class deckImporter {
   
   // ---------------------------------------------------------
   //  
-  static async createDeck(html) {
+  static async createDeck(html, sourceData) {
     const folderPath = html.find("input[name=folder-path]").val();  
     const cardBackImage = html.find("input[name=card-back-image]").val();  
     const deckName = html.find("#deck_name")[0].value;  
@@ -57,7 +65,10 @@ export class deckImporter {
     const gridHeight = html.find("#grid_height")[0].value;  
   
     // 
-    let {files} = await FilePicker.browse("data", folderPath);
+    let {files} = await FilePicker.browse(
+      sourceData.activeSource, 
+      sourceData.path, 
+      { bucket: sourceData.activeBucket || '' });
     
     //create the empty deck
     const deck = await Cards.create({
@@ -69,7 +80,7 @@ export class deckImporter {
     const rawCardData = files.map((file) => {
       // file = imagePath and splitPath(file) = image name
       const imagePath = file;
-      const imageName = common.splitPath(imagePath);
+      const imageName = common.splitPath(imagePath).capitalize();
 
       if ( cardWidth==0 || gridHeight==0 ) {
         return {
