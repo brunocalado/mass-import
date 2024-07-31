@@ -9,7 +9,12 @@ export class sceneImporter {
     
     const templateData = {basePath: basePath}; 
     const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-scene-dialog.html`, templateData );                
-    
+    const sourceData = {
+      activeSource: 'data', // data is default
+      activeBucket: '',
+      path: ''
+    }
+
     new Dialog({
       title: `Image Folder To Scene`,
       content: dialogTemplate,
@@ -17,7 +22,7 @@ export class sceneImporter {
         roll: {
           label: "Create",
           callback: (html) => {
-            this.createScenesFolder(html);
+            this.createScenesFolder(html, sourceData);
           }
         }, 
         cancel: {
@@ -32,6 +37,9 @@ export class sceneImporter {
             new FilePicker({
                 type: "folder",
                 callback: function (path) {
+                  sourceData.activeSource = this.activeSource;
+                  sourceData.activeBucket = this.activeSource==='s3' ? this.sources.s3.bucket : '';
+                  sourceData.path = path;
                   html.find("input[name=folder-path]").val(path);
             }}).render(true);
         });
@@ -41,8 +49,8 @@ export class sceneImporter {
   
   // ---------------------------------------------------------
   //  
-  static async createScenesFolder(html) {
-    const folderPath = html.find("input[name=folder-path]").val();  
+  static async createScenesFolder(html, sourceData) {
+    // const folderPath = html.find("input[name=folder-path]").val();  
     const folderName = html.find("#folderName")[0].value;  
 
     const gridType = html.find("select[name=select_grid_type]").val();  
@@ -61,7 +69,13 @@ export class sceneImporter {
     // Create Folder
     const createdFolder = await Folder.createDocuments([{name: folderName, type: "Scene"}]);
     const folderID = createdFolder[0].id;  
-    let {files} = await FilePicker.browse("data", folderPath);
+    // let {files} = await FilePicker.browse("data", folderPath);
+
+    console.log('++', sourceData)
+    let {files} = await FilePicker.browse(
+      sourceData.activeSource, 
+      sourceData.path, 
+      { bucket: sourceData.activeBucket || '' });
 
     const sceneDefaults = {
       folderID: folderID,

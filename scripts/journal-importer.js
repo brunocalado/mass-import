@@ -10,7 +10,12 @@ export class journalImporter {
     
     const templateData = {basePath: basePath}; 
     const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-journal-dialog.html`, templateData );                
-    
+    const sourceData = {
+      activeSource: 'data', // data is default
+      activeBucket: '',
+      path: ''
+    }
+
     new Dialog({
       title: `Folder To Journal`,
       content: dialogTemplate,
@@ -18,7 +23,7 @@ export class journalImporter {
         roll: {
           label: "Create",
           callback: (html) => {
-            this.createJournal(html);
+            this.createJournal(html, sourceData);
           }
         }, 
         cancel: {
@@ -33,8 +38,15 @@ export class journalImporter {
         new FilePicker({
           type: "folder",
           callback: function (path) {
+            sourceData.activeSource = this.activeSource;
+            sourceData.activeBucket = this.activeSource==='s3' ? this.sources.s3.bucket : '';
+            sourceData.path = path;
             html.find("input[name=folder-path]").val(path);
-        }}).render(true);
+          },
+          onChangeTab: ()=>{
+            
+          }
+        }).render(true);
       });
     }    
     
@@ -42,10 +54,10 @@ export class journalImporter {
   
   // ---------------------------------------------------------
   //  
-  static async createJournal(html) {
+  static async createJournal(html, sourceData) {
     const folderName = html.find("input[id=folder_name").val();  
-    const journalName = html.find("input[id=journal_name").val();  
-    const folderPath = html.find("input[name=folder-path]").val();  
+    const journalName = html.find("input[id=journal_name").val() || '';  
+    // const folderPath = html.find("input[name=folder-path]").val();  
     const importType = parseInt( html.find("select[name=select_import_type]").val() );  
     // all images to text
     const widthName = html.find("input[id=width_name").val();  
@@ -55,15 +67,17 @@ export class journalImporter {
     const videoShowVideoControls = html.find("input[name=video_show_video_controls]")[0].checked;
     const videoAutoplay = html.find("input[name=video_autoplay]")[0].checked;
     const videoLoop = html.find("input[name=video_loop]")[0].checked;
-    
     let journalData = {};
 
     // Split files
-    let {files} = await FilePicker.browse("data", folderPath);
+    let {files} = await FilePicker.browse(
+      sourceData.activeSource, 
+      sourceData.path, 
+      { bucket: sourceData.activeBucket || '' });
     
     // Folder
     const createdFolder = await Folder.createDocuments([{name: folderName, type: "JournalEntry"}]);
-    const folderID = createdFolder[0].id;    
+    const folderID = createdFolder[0].id;
     
     // Data
     journalData.journalName = journalName;
@@ -114,9 +128,10 @@ export class journalImporter {
   
   // This will create one journal with one image page for each image.
   static async oneImageOnePage(files, data) {
-    let images = [];
-    for (let imagePath of files) {
-      const imageName = common.splitPath(imagePath);
+    let images = []; 
+    for (let imagePath of files) { 
+      const imageName = common.splitPath(imagePath).capitalize();
+      // 
       images.push({
         "name": imageName,
         "type": "image",
@@ -141,7 +156,7 @@ export class journalImporter {
   static async oneImageOneJournalImage(files, data) {
     for (let imagePath of files) {
       var myImage;
-      const imageName = common.splitPath(imagePath);
+      let imageName = common.splitPath(imagePath).capitalize();
       myImage = [{
         "name": imageName,
         "type": "image",
@@ -154,7 +169,7 @@ export class journalImporter {
         }
       }];
       await JournalEntry.create({
-        name: data.journalName,
+        name: data.journalName ? `${data.journalName} - ${imageName}` : imageName,
         folder: data.folderID,
         pages: myImage      
       });        
