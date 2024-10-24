@@ -92,10 +92,11 @@ export class journalImporter {
     /* Import Types
     0 - Each Image One Page
     1 - Each Image One Journal Image
-    2 - All Images into Text Page
-    3 - PDF
-    4 - Each Video One Video Page
-    5 - All Video Into One Text Page
+    2 - Each Image One Text Page
+    3 - All Images into Text Page
+    4 - PDF
+    5 - Each Video One Video Page
+    6 - All Video Into One Text Page
     */
     switch(importType) {
       case 0:
@@ -105,15 +106,18 @@ export class journalImporter {
         this.oneImageOneJournalImage(files, journalData);        
         break;           
       case 2:
+        this.oneImageOneTextPage(files, journalData);        
+        break;           
+      case 3:
         this.allImagesToOneTextPage(files, journalData);        
         break;   
-      case 3:
+      case 4:
         this.folderToJournalPDF(files, journalData);        
         break;   
-      case 4:
+      case 5:
         this.oneVideoOnePage(files, journalData);        
         break;           
-      case 5:
+      case 6:
         this.allVideoToOneTextPage(files, journalData);        
         break;          
       default:
@@ -151,6 +155,41 @@ export class journalImporter {
       pages: images      
     });    
   } // END oneImageOnePage
+
+  // This will create one journal with one text page for each image.
+  static async oneImageOneTextPage(files, data) {
+    let textPages = []; 
+    for (let imagePath of files) { 
+      const imageName = common.splitPath(imagePath).capitalize();
+      let tempsize="";
+      let imageFormated="";
+      if(data.heightName!="" ) {
+        tempsize =  ` height="${data.heightName}"`;
+      }
+      if(data.widthName!="" ) {
+        tempsize = tempsize + ` width="${data.widthName}"`;
+      } 
+
+      imageFormated = `<img src=\"${imagePath}\" ${tempsize}/>`;
+     
+      textPages.push({
+        "name": imageName,
+        "type": "text",
+        "title": {
+          "show": false
+        },
+        "text": {
+          "content": imageFormated
+        }
+      });
+    }    
+
+    await JournalEntry.create({
+      name: data.journalName,
+      folder: data.folderID,
+      pages: textPages      
+    });    
+  } // END oneImageOneTextPage
 
   // This will create one journal with one image.
   static async oneImageOneJournalImage(files, data) {

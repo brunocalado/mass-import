@@ -1,3 +1,6 @@
+0.1.4
+- https://github.com/brunocalado/mass-import/issues/8
+
 0.1.3
 - S3
 
