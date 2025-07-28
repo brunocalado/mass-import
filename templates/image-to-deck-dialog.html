@@ -1,75 +1,132 @@
-<style type="text/css">
-  .tg  {border-collapse:collapse;border-spacing:0;}
-  .tg td{
-    border-color:black;
-    border-style:solid;
-    border-width:1px;
-    overflow:hidden;
-    padding:2px 2px;
-    word-break:normal;
-  }
-  .tg th{
-    border-color:black;
-    border-style:solid;
-    border-width:1px;
-    font-weight:normal;
-    overflow:hidden;
-    padding: 2px 2px;
-    word-break:normal;
-  }
-  .tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
-</style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Foundry VTT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .mass-import-dialog {
+          font-family: Arial, sans-serif;
+        }
 
-<table>
-<thead>
-  <tr>
-    <th colspan="2">Folder Path</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td><input name="folder-path" style="width:100%;"></td>
-    <td><button class="picker-button"><i class="fas fa-file-import fa-fw"></i></button></td>
-  </tr>
-</tbody>
-</table>
+        .mass-import-dialog .section {
+          border: 1px solid black;
+          width: 100%;
+          margin-bottom: 10px;
+        }
 
-<table>
-<thead>
-  <tr>
-    <th colspan="2">Card Back Image</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td><input name="card-back-image" style="width:100%;"></td>
-    <td><button class="card-back-picker-button"><i class="fas fa-file-import fa-fw"></i></button></td>
-  </tr>
-</tbody>
-</table>
+        .mass-import-dialog .section-header {
+          font-weight: bold;
+          background-color: #f0f0f0;
+          color: #000000;
+          border-bottom: 1px solid black;
+          padding: 4px 6px;
+          text-align: center;
+        }
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-9wq8" colspan="2">Deck Configuration</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-9wq8" colspan="2">Deck Name</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8" colspan="2"><input type="text" id="deck_name" value="My Deck"/></td>
-  </tr>
+        .mass-import-dialog .section-body {
+          display: flex;
+          flex-direction: column;
+        }
 
-  <tr>
-    <td class="tg-9wq8">Width</td>
-    <td class="tg-9wq8">Height</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8"><input type="number" min="50" id="card_width" value="0"/></td>
-    <td class="tg-9wq8"><input type="number" min="50" id="grid_height" value="0"/></td>
-  </tr>
-  
-</tbody>
-</table>
+        .mass-import-dialog .row {
+          display: flex;
+          border-bottom: 1px solid black;
+        }
+
+        .mass-import-dialog .row:last-child {
+          border-bottom: none;
+        }
+
+        .mass-import-dialog .cell {
+          border-right: 1px solid black;
+          padding: 4px 6px;
+          text-align: center;
+          vertical-align: middle;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .mass-import-dialog .cell:last-child {
+          border-right: none;
+        }
+
+        .mass-import-dialog .cell.wide {
+          flex: 4;
+        }
+
+        .mass-import-dialog input[type="text"], 
+        .mass-import-dialog input[type="number"] {
+          width: 90%;
+        }
+
+        .mass-import-dialog .picker-button {
+          padding: 4px 8px;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="mass-import-dialog">
+        <!-- Folder Path Section -->
+        <div class="section">
+            <div class="section-header">Folder Path</div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="cell wide">
+                        <input name="folder-path" type="text" style="width:100%;">
+                    </div>
+                    <div class="cell">
+                        <button class="picker-button"><i class="fas fa-file-import fa-fw"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Back Image Section -->
+        <div class="section">
+            <div class="section-header">Card Back Image</div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="cell wide">
+                        <input name="card-back-image" type="text" style="width:100%;">
+                    </div>
+                    <div class="cell">
+                        <button class="card-back-picker-button picker-button"><i class="fas fa-file-import fa-fw"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deck Configuration Section -->
+        <div class="section">
+            <div class="section-header">Deck Configuration</div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="cell" style="border-right: none; flex: 1;">Deck Name</div>
+                </div>
+                <div class="row">
+                    <div class="cell" style="border-right: none; flex: 1;">
+                        <input type="text" id="deck_name" value="My Deck"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell">Width</div>
+                    <div class="cell">Height</div>
+                </div>
+                <div class="row">
+                    <div class="cell">
+                        <input type="number" min="50" id="card_width" value="0"/>
+                    </div>
+                    <div class="cell">
+                        <input type="number" min="50" id="grid_height" value="0"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,13 +9,31 @@ export class deckImporter {
     const basePath = 'modules/mass-import/WORKSPACE/taroticum'; // 'modules/mymaps/animatedmaps'
     
     const templateData = {basePath: basePath}; 
-    const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-deck-dialog.html`, templateData );                
+    const dialogTemplate = await foundry.applications.handlebars.renderTemplate( `modules/mass-import/templates/image-to-deck-dialog.html`, templateData );                
     const sourceData = {
       activeSource: 'data', // data is default
       activeBucket: '',
       path: ''
     }
-
+    
+    // App V2
+    const result = await foundry.applications.api.DialogV2.prompt({
+      window: { title: "Image Folder To Deck" },
+      content: dialogTemplate,
+      ok: {
+        label: "Create",
+        callback: (event, button, dialog) => {
+          const html = $(dialog.element); // ← Esta linha resolve o problema
+          this.createDeck(html, sourceData);
+        }
+      },
+      render: (event, dialog) => {
+        const html = $(dialog.element); // ← E esta também
+        listener(html);
+      }
+    });  
+    
+/*
     new Dialog({
       title: `Image Folder To Deck`,
       content: dialogTemplate,
@@ -32,10 +50,10 @@ export class deckImporter {
       },
       render: (html) => listener(html)
     }).render(true);
-
+*/
     function listener(html) {
         html.find(".picker-button").on("click", function() {
-            new FilePicker({
+            new foundry.applications.apps.FilePicker.implementation({
                 type: "folder",
                 callback: function (path) {
                   sourceData.activeSource = this.activeSource;
@@ -45,7 +63,7 @@ export class deckImporter {
             }}).render(true);
         });
         html.find(".card-back-picker-button").on("click", function() {
-            new FilePicker({
+            new foundry.applications.apps.FilePicker.implementation({
                 type: "data",
                 callback: function (path) {
                   html.find("input[name=card-back-image]").val(path);

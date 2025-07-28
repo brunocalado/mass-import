@@ -54,6 +54,9 @@ If you need more information go the the **Journal - Mass Import** and read the j
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/mass-import/issues)
 - Do you find out a bug? [Report it!](https://github.com/brunocalado/mass-import/issues)
 
+# V12
+If you need an old version, you need to install manually. Use the [link](https://github.com/brunocalado/mass-import/tree/2a0b5b2330d37e33d27c155702d9271043e67a80)
+
 # Changes
 You can see changes at [CHANGELOG](CHANGELOG.md).
 

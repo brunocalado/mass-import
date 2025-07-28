@@ -1,0 +1,61 @@
+.mass-import-dialog {
+  font-family: Arial, sans-serif;
+}
+
+.mass-import-dialog .section {
+  border: 1px solid black;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.mass-import-dialog .section-header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  color: #000000;
+  border-bottom: 1px solid black;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.mass-import-dialog .section-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.mass-import-dialog .row {
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.mass-import-dialog .row:last-child {
+  border-bottom: none;
+}
+
+.mass-import-dialog .cell {
+  border-right: 1px solid black;
+  padding: 4px 6px;
+  text-align: center;
+  vertical-align: middle;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mass-import-dialog .cell:last-child {
+  border-right: none;
+}
+
+.mass-import-dialog .cell.wide {
+  flex: 4;
+}
+
+.mass-import-dialog input[type="text"], 
+.mass-import-dialog input[type="number"] {
+  width: 90%;
+}
+
+.mass-import-dialog .picker-button {
+  padding: 4px 8px;
+  cursor: pointer;
+}

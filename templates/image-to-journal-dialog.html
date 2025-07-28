@@ -1,121 +1,192 @@
-<style type="text/css">
-  .tg  {border-collapse:collapse;border-spacing:0;}
-  .tg td{
-    border-color:black;
-    border-style:solid;
-    border-width:1px;
-    overflow:hidden;
-    padding:2px 2px;
-    word-break:normal;
-  }
-  .tg th{
-    border-color:black;
-    border-style:solid;
-    border-width:1px;
-    font-weight:normal;
-    overflow:hidden;
-    padding: 2px 2px;
-    word-break:normal;
-  }
-  .tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
-</style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundry VTT Module</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .mass-import-dialog {
+          font-family: Arial, sans-serif;
+        }
 
-<table>
-<thead>
-  <tr>
-    <th colspan="2">Folder Path</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td><input name="folder-path" style="width:100%;"></td>
-    <td><button class="picker-button"><i class="fas fa-file-import fa-fw"></i></button></td>
-  </tr>
-</tbody>
-</table>
+        .mass-import-dialog .section {
+          border: 1px solid black;
+          width: 100%;
+          margin-bottom: 10px;
+        }
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-9wq8" colspan="2">Configuration</th>
-  </tr>
-</thead>
-<tbody>
+        .mass-import-dialog .section-header {
+          font-weight: bold;
+          background-color: #f0f0f0;
+          color: #000000;
+          border-bottom: 1px solid black;
+          padding: 4px 6px;
+          text-align: center;
+        }
 
-  <tr>
-    <td class="tg-9wq8" colspan="2">Import Type</td>    
-  </tr>
-  <tr>
-    <td class="tg-9wq8" colspan="2">
-      <select name="select_import_type">
-        <option value="0" selected>Each Image One Image Page</option>
-        <option value="1">Each Image One Journal with One Image Page</option>        
-        <option value="2">Each Image One Text Page</option>
-        <option value="3">All Images into One Text Page</option>
-        <option value="4">PDF</option>
-        <option value="5">Each Video One Video Page</option>
-        <option value="6">All Video into One Text Page</option>
-      </select>  
-    </td>
-  </tr>
+        .mass-import-dialog .section-body {
+          display: flex;
+          flex-direction: column;
+        }
 
-  <tr>
-    <td class="tg-9wq8">Journal Name</td>
-    <td class="tg-9wq8">Folder Name</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8"><input type="text" id="journal_name" value='My Journal'/></td>
-    <td class="tg-9wq8"><input type="text" id="folder_name" value='My Folder'/></td>
-  </tr>
-  
-</tbody>
-</table>
+        .mass-import-dialog .row {
+          display: flex;
+          border-bottom: 1px solid black;
+        }
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-9wq8" colspan="2">All Images into One Text Page</th>
-  </tr>
-</thead>
-<tbody>
+        .mass-import-dialog .row:last-child {
+          border-bottom: none;
+        }
 
-  <tr>
-    <td class="tg-9wq8">Width</td>
-    <td class="tg-9wq8">Height</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8"><input type="text" id="width_name"></td>
-    <td class="tg-9wq8"><input type="text" id="height_name"></td>
-  </tr>
- 
-</tbody>
-</table>
+        .mass-import-dialog .cell {
+          border-right: 1px solid black;
+          padding: 4px 6px;
+          text-align: center;
+          vertical-align: middle;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-9wq8" colspan="2">Video Options</th>
-  </tr>
-</thead>
-<tbody>
+        .mass-import-dialog .cell:last-child {
+          border-right: none;
+        }
 
-  <tr>
-    <td class="tg-9wq8">Show Video Controls</td>
-    <td class="tg-9wq8">Autoplay Video</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8"><input type="checkbox" name="video_show_video_controls"></td>
-    <td class="tg-9wq8"><input type="checkbox" name="video_autoplay"></td>
-  </tr>
+        .mass-import-dialog .cell.wide {
+          flex: 4;
+        }
 
-  <tr>
-    <td class="tg-9wq8">Loop</td>
-    <td class="tg-9wq8">Volume</td>
-  </tr>
-  <tr>
-    <td class="tg-9wq8"><input type="checkbox" name="video_loop"></td>
-    <td class="tg-9wq8"><input type="range" min="0" max="1" value="0" step="0.01" class="slider" id="video_volume"></td>
-  </tr>
-  
-</tbody>
-</table>
+        .mass-import-dialog input[type="text"], 
+        .mass-import-dialog input[type="number"] {
+          width: 90%;
+        }
+
+        .mass-import-dialog .picker-button {
+          padding: 4px 8px;
+          cursor: pointer;
+        }
+
+        /* Estilos adicionais para melhor apresentação */
+        body {
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mass-import-dialog">
+            <!-- Folder Path Section -->
+            <div class="section">
+                <div class="section-header">Folder Path</div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="cell wide">
+                            <input name="folder-path" type="text" style="width:100%;">
+                        </div>
+                        <div class="cell">
+                            <button class="picker-button"><i class="fas fa-file-import fa-fw"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div class="section">
+                <div class="section-header">Configuration</div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="cell" style="flex: 2; font-weight: bold;">Import Type</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell" style="flex: 2;">
+                            <select name="select_import_type" style="width: 90%;">
+                                <option value="0" selected>Each Image One Image Page</option>
+                                <option value="1">Each Image One Journal with One Image Page</option>        
+                                <option value="2">Each Image One Text Page</option>
+                                <option value="3">All Images into One Text Page</option>
+                                <option value="4">PDF</option>
+                                <option value="5">Each Video One Video Page</option>
+                                <option value="6">All Video into One Text Page</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">Journal Name</div>
+                        <div class="cell">Folder Name</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">
+                            <input type="text" id="journal_name" value="My Journal">
+                        </div>
+                        <div class="cell">
+                            <input type="text" id="folder_name" value="My Folder">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Images into One Text Page Section -->
+            <div class="section">
+                <div class="section-header">All Images into One Text Page</div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="cell">Width</div>
+                        <div class="cell">Height</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">
+                            <input type="text" id="width_name">
+                        </div>
+                        <div class="cell">
+                            <input type="text" id="height_name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Options Section -->
+            <div class="section">
+                <div class="section-header">Video Options</div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="cell">Show Video Controls</div>
+                        <div class="cell">Autoplay Video</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">
+                            <input type="checkbox" name="video_show_video_controls">
+                        </div>
+                        <div class="cell">
+                            <input type="checkbox" name="video_autoplay">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">Loop</div>
+                        <div class="cell">Volume</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">
+                            <input type="checkbox" name="video_loop">
+                        </div>
+                        <div class="cell">
+                            <input type="range" min="0" max="1" value="0" step="0.01" class="slider" id="video_volume" style="width: 90%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

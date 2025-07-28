@@ -8,33 +8,55 @@ export class sceneImporter {
     const basePath = 'modules/mymaps/animatedmaps/cavern'; // 'modules/mymaps/animatedmaps'
     
     const templateData = {basePath: basePath}; 
-    const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-scene-dialog.html`, templateData );                
+    const dialogTemplate = await foundry.applications.handlebars.renderTemplate( `modules/mass-import/templates/image-to-scene-dialog.html`, templateData );                
     const sourceData = {
       activeSource: 'data', // data is default
       activeBucket: '',
       path: ''
     }
 
-    new Dialog({
-      title: `Image Folder To Scene`,
+    // App V2
+    // Configurar o dialog sem usar prompt()
+    const dialogOptions = {
+      window: { 
+        title: "Image Folder To Scene",
+        resizable: true
+      },
       content: dialogTemplate,
-      buttons: {
-        roll: {
+      buttons: [
+        {
+          action: "create",
           label: "Create",
-          callback: (html) => {
+          default: true,
+          callback: (event, button, dialog) => {
+            const html = $(dialog.element);
             this.createScenesFolder(html, sourceData);
           }
-        }, 
-        cancel: {
+        },
+        {
+          action: "cancel",
           label: "Cancel"
         }
-      },
-      render: (html) => listener(html)
-    }).render(true);
+      ]
+    };
+
+    // Criar o dialog
+    const dialog = new foundry.applications.api.DialogV2(dialogOptions);
+    
+    // Hook para configurar listeners após render
+    dialog.addEventListener('render', () => {
+      const html = $(dialog.element);
+      listener(html);
+    });
+    
+    dialog.render(true);
 
     function listener(html) {
-        html.find(".picker-button").on("click", function(){
-            new FilePicker({
+        html.find(".picker-button").on("click", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            
+            new foundry.applications.apps.FilePicker.implementation({
                 type: "folder",
                 callback: function (path) {
                   sourceData.activeSource = this.activeSource;

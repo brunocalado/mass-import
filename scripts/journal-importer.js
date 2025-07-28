@@ -4,50 +4,67 @@ export class journalImporter {
 
   // ---------------------------------------------------------
   //
-  static async imageToJournal() {
-   
+  static async imageToJournal() {   
     const basePath = 'modules/mass-import/WORKSPACE/taroticum'; // 'modules/mymaps/animatedmaps'
     
     const templateData = {basePath: basePath}; 
-    const dialogTemplate = await renderTemplate( `modules/mass-import/templates/image-to-journal-dialog.html`, templateData );                
+    const dialogTemplate = await foundry.applications.handlebars.renderTemplate( `modules/mass-import/templates/image-to-journal-dialog.html`, templateData );                
     const sourceData = {
       activeSource: 'data', // data is default
       activeBucket: '',
       path: ''
     }
 
-    new Dialog({
-      title: `Folder To Journal`,
+    // App V2
+    // Configurar o dialog sem usar prompt()
+    const dialogOptions = {
+      window: { 
+        title: "Journals",
+        resizable: true
+      },
       content: dialogTemplate,
-      buttons: {
-        roll: {
+      buttons: [
+        {
+          action: "create",
           label: "Create",
-          callback: (html) => {
+          default: true,
+          callback: (event, button, dialog) => {
+            const html = $(dialog.element);
             this.createJournal(html, sourceData);
           }
-        }, 
-        cancel: {
+        },
+        {
+          action: "cancel",
           label: "Cancel"
         }
-      },
-      render: (html) => listener(html)
-    }).render(true);
+      ]
+    };
+
+    // Criar o dialog
+    const dialog = new foundry.applications.api.DialogV2(dialogOptions);
+    
+    // Hook para configurar listeners após render
+    dialog.addEventListener('render', () => {
+      const html = $(dialog.element);
+      listener(html);
+    });
+    
+    dialog.render(true);
 
     function listener(html) {
-      html.find(".picker-button").on("click", function() {
-        new FilePicker({
-          type: "folder",
-          callback: function (path) {
-            sourceData.activeSource = this.activeSource;
-            sourceData.activeBucket = this.activeSource==='s3' ? this.sources.s3.bucket : '';
-            sourceData.path = path;
-            html.find("input[name=folder-path]").val(path);
-          },
-          onChangeTab: ()=>{
+        html.find(".picker-button").on("click", function(e){
+            e.preventDefault();
+            e.stopPropagation();
             
-          }
-        }).render(true);
-      });
+            new foundry.applications.apps.FilePicker.implementation({
+                type: "folder",
+                callback: function (path) {
+                  sourceData.activeSource = this.activeSource;
+                  sourceData.activeBucket = this.activeSource==='s3' ? this.sources.s3.bucket : '';
+                  sourceData.path = path;
+                  html.find("input[name=folder-path]").val(path);
+            }}).render(true);
+        });
     }    
     
   }
