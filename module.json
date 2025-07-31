@@ -9,9 +9,9 @@
       "flags": {}
     }
   ],
-  "version": "0.1.5",
+  "version": "0.1.6",
   "compatibility": {
-    "minimum": "12",
+    "minimum": "13",
     "verified": "13"
   },
   
