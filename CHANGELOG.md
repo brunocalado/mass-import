@@ -1,4 +1,15 @@
+# 0.3.0
+
+- [Changed] `MODULE_ID` extracted to `scripts/constants.js` — single source of truth imported across all scripts
+- [Fixed] `Common.isValidImage/PDF/Video` moved inside the class body
+- [Fixed] `FilePicker.implementation` now falls back to `FilePicker` base class in all four call sites
+- [Fixed] `extractConfig` in Journal Importer uses optional chaining to prevent crashes on missing DOM elements
+- [Fixed] `createSeparateJournals` now uses a single batched `createDocuments()` call instead of sequential per-file creates
+- [Fixed] Notification message in Scene Rescaler now shows the correct symbol (`×` or `÷`) based on the selected operation
+- [Changed] Portuguese comments in Deck Importer translated to English
+
 # 0.2.4
+
 - https://github.com/brunocalado/mass-import/issues/15
 - Universal Scene Rescaler Improved
 - [Fixed] CSS isolation — dialog styles are now scoped at the ApplicationV2 root element, preventing system CSS from making text unreadable

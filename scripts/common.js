@@ -1,14 +1,16 @@
+import { MODULE_ID } from './constants.js';
+
 /**
  * Utility class for common operations
  */
 export class Common {
-  
+
   /**
    * Log message to console only if Debug setting is enabled
    */
   static log(...args) {
     try {
-        if (game.settings.get('mass-import', 'debug')) {
+        if (game.settings.get(MODULE_ID, 'debug')) {
             console.log("Mass Import |", ...args);
         }
     } catch (e) {
@@ -20,7 +22,7 @@ export class Common {
    */
   static error(...args) {
     try {
-        if (game.settings.get('mass-import', 'debug')) {
+        if (game.settings.get(MODULE_ID, 'debug')) {
             console.error("Mass Import |", ...args);
         }
     } catch (e) {}
@@ -33,7 +35,7 @@ export class Common {
    */
   static splitPath(str) {
     if (!str) return "";
-    let imageName = str.split('\\').pop().split('/').pop(); 
+    let imageName = str.split('\\').pop().split('/').pop();
     imageName = imageName.substring(0, imageName.lastIndexOf('.')) || imageName;
     imageName = imageName.replace(/[_-]/g, " ");
     return decodeURI(imageName);
@@ -63,8 +65,8 @@ export class Common {
     button.onclick = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      
-      const FilePickerClass = foundry.applications.apps.FilePicker.implementation;
+
+      const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
       const fp = new FilePickerClass({
         type: type,
         current: input.value,
@@ -80,16 +82,28 @@ export class Common {
       fp.render(true);
     };
   }
-}
 
-Common.isValidImage = function(path) {
+  /**
+   * @param {string} path
+   * @returns {boolean}
+   */
+  static isValidImage(path) {
     return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/i.test(path);
-};
+  }
 
-Common.isValidPDF = function(path) {
+  /**
+   * @param {string} path
+   * @returns {boolean}
+   */
+  static isValidPDF(path) {
     return /\.pdf$/i.test(path);
-};
+  }
 
-Common.isValidVideo = function(path) {
+  /**
+   * @param {string} path
+   * @returns {boolean}
+   */
+  static isValidVideo(path) {
     return /\.(webm|mp4|m4v|ogg)$/i.test(path);
-};
+  }
+}

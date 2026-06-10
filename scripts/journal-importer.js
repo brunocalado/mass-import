@@ -1,14 +1,15 @@
 import { Common } from './common.js';
+import { MODULE_ID } from './constants.js';
 
 export class JournalImporter {
 
   static async imageToJournal() {
-    const templatePath = `modules/mass-import/templates/image-to-journal-dialog.hbs`;
+    const templatePath = `modules/${MODULE_ID}/templates/image-to-journal-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
     const sourceData = { activeSource: 'data', activeBucket: '', path: '' };
 
     // 1. Load User Preferences (Defaults if none exist)
-    const savedConfig = game.user.getFlag('mass-import', 'journalConfig') || {};
+    const savedConfig = game.user.getFlag(MODULE_ID, 'journalConfig') || {};
     const defaults = foundry.utils.mergeObject({
         path: '',
         mode: 0,
@@ -21,7 +22,7 @@ export class JournalImporter {
 
     // 2. Create Instance
     const dialog = new foundry.applications.api.DialogV2({
-      classes: ["mass-import"],
+      classes: [MODULE_ID],
       window: {
         title: "Mass Journal Import",
         icon: "fas fa-book-open",
@@ -85,10 +86,10 @@ export class JournalImporter {
     if (!config.path) return ui.notifications.error("Path is required.");
 
     // Save preferences for next time
-    await game.user.setFlag('mass-import', 'journalConfig', config);
+    await game.user.setFlag(MODULE_ID, 'journalConfig', config);
 
     try {
-        const FilePickerClass = foundry.applications.apps.FilePicker.implementation;
+        const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
         const result = await FilePickerClass.browse(sourceData.activeSource, config.path, { bucket: sourceData.activeBucket });
         
         let files = result.files;
@@ -135,16 +136,16 @@ export class JournalImporter {
 
   static extractConfig(html) {
     return {
-        path: html.querySelector("input[name='folder-path']").value,
-        mode: parseInt(html.querySelector("select[name='select_import_type']").value),
-        journalName: html.querySelector("#journal_name").value,
-        folderName: html.querySelector("#folder_name").value,
-        width: html.querySelector("#width_name").value,
-        height: html.querySelector("#height_name").value,
+        path: html.querySelector("input[name='folder-path']")?.value ?? '',
+        mode: parseInt(html.querySelector("select[name='select_import_type']")?.value ?? '0'),
+        journalName: html.querySelector("#journal_name")?.value ?? 'Mass Import Journal',
+        folderName: html.querySelector("#folder_name")?.value ?? 'Mass Import',
+        width: html.querySelector("#width_name")?.value ?? '',
+        height: html.querySelector("#height_name")?.value ?? '',
         video: {
-            controls: html.querySelector("input[name='video_controls']").checked,
-            loop: html.querySelector("input[name='video_loop']").checked,
-            autoplay: html.querySelector("input[name='video_autoplay']").checked
+            controls: html.querySelector("input[name='video_controls']")?.checked ?? true,
+            loop: html.querySelector("input[name='video_loop']")?.checked ?? true,
+            autoplay: html.querySelector("input[name='video_autoplay']")?.checked ?? true
         }
     };
   }
@@ -170,9 +171,9 @@ export class JournalImporter {
   }
 
   static async createSeparateJournals(files, config, type) {
-    for (const file of files) {
+    const documentsData = files.map(file => {
         const name = Common.splitPath(file);
-        await JournalEntry.create({
+        return {
             name: name,
             folder: config.folderId,
             pages: [{
@@ -181,8 +182,9 @@ export class JournalImporter {
                 src: file,
                 image: { caption: name }
             }]
-        });
-    }
+        };
+    });
+    await JournalEntry.implementation.createDocuments(documentsData);
   }
 
   static async createOneJournalTextGallery(files, config, singlePage, mediaType='image') {

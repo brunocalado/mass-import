@@ -11,6 +11,7 @@ Stop dragging and dropping files one by one—import entire collections in secon
        loop 
        muted></video>
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-red?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/mestredigital)
 
 ## 🚀 Key Features
 
@@ -51,9 +52,11 @@ The most versatile tool for lore, handouts, and assets. Now features **Smart Per
 1. Open Foundry VTT and go to the **Add-on Modules** tab.
 2. Click **Install Module**.
 3. Paste the Manifest URL:
-   ```
-   [https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json](https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json)
-   ```
+
+```js   
+https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json
+```
+
 4. Click **Install**.
 
 ## 🛠️ How to Use

@@ -3,8 +3,7 @@ import { JournalImporter } from './journal-importer.js';
 import { SceneImporter } from './scene-importer.js';
 import { SceneRescaler } from './scene-rescaler.js';
 import { Common } from './common.js';
-
-const MODULE_ID = 'mass-import';
+import { MODULE_ID } from './constants.js';
 
 Hooks.once('init', () => {
   

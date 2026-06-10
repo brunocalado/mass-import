@@ -1,9 +1,10 @@
 import { Common } from './common.js';
+import { MODULE_ID } from './constants.js';
 
 export class SceneImporter {
 
   static async imageToScene() {
-    const templatePath = `modules/mass-import/templates/image-to-scene-dialog.hbs`;
+    const templatePath = `modules/${MODULE_ID}/templates/image-to-scene-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
 
     const sourceData = {
@@ -13,11 +14,11 @@ export class SceneImporter {
     };
 
     // --- LOAD SAVED PREFERENCE ---
-    const lastFolder = game.user.getFlag('mass-import', 'lastSceneFolder') || '';
+    const lastFolder = game.user.getFlag(MODULE_ID, 'lastSceneFolder') || '';
 
     // 1. Create Instance
     const dialog = new foundry.applications.api.DialogV2({
-      classes: ["mass-import"],
+      classes: [MODULE_ID],
       window: {
         title: "Import Images/Videos to Scenes",
         icon: "fas fa-map",
@@ -75,7 +76,7 @@ export class SceneImporter {
 
     try {
       // --- SAVE LAST USED FOLDER ---
-      await game.user.setFlag('mass-import', 'lastSceneFolder', folderPath);
+      await game.user.setFlag(MODULE_ID, 'lastSceneFolder', folderPath);
 
       // Find or Create Folder
       let folder = game.folders.find(f => f.name === folderName && f.type === "Scene");
@@ -85,7 +86,7 @@ export class SceneImporter {
 
       const browseOptions = { bucket: sourceData.activeBucket || '' };
       
-      const FilePickerClass = foundry.applications.apps.FilePicker.implementation;
+      const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
       const filesResult = await FilePickerClass.browse(sourceData.activeSource, folderPath, browseOptions);
       
       if (!filesResult.files || filesResult.files.length === 0) {

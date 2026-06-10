@@ -1,4 +1,5 @@
 import { Common } from './common.js';
+import { MODULE_ID } from './constants.js';
 
 /**
  * Handles batch rescaling of the current scene's grid distance, grid units,
@@ -17,11 +18,11 @@ export class SceneRescaler {
       return;
     }
 
-    const templatePath = `modules/mass-import/templates/scene-rescaler-dialog.hbs`;
+    const templatePath = `modules/${MODULE_ID}/templates/scene-rescaler-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
 
     const dialog = new foundry.applications.api.DialogV2({
-      classes: ["mass-import"],
+      classes: [MODULE_ID],
       window: {
         title: "Scene Rescaler",
         icon: "fas fa-expand-arrows-alt",
@@ -121,8 +122,9 @@ export class SceneRescaler {
         "grid.units": newGridUnit
       });
 
+      const symbol = operation === "multiply" ? "×" : "÷";
       ui.notifications.info(
-        `Mass Import: Scene rescaled (${operation} ÷ ${factor}). Grid distance: ${currentGridDist} → ${newGridDist}.`
+        `Mass Import: Scene rescaled (${symbol} ${factor}). Grid distance: ${currentGridDist} → ${newGridDist}.`
       );
     } catch (error) {
       Common.error("Scene Rescaler — Update failed:", error);

@@ -1,20 +1,21 @@
 import { Common } from './common.js';
+import { MODULE_ID } from './constants.js';
 
 export class DeckImporter {
 
   static async imageToDeck() {
-    const templatePath = `modules/mass-import/templates/image-to-deck-dialog.hbs`;
+    const templatePath = `modules/${MODULE_ID}/templates/image-to-deck-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
     
     const sourceData = { activeSource: 'data', activeBucket: '', path: '' };
 
-    // --- CARREGAR PREFERÊNCIAS SALVAS ---
-    const lastFolder = game.user.getFlag('mass-import', 'lastDeckFolder') || '';
-    const lastBackImg = game.user.getFlag('mass-import', 'lastDeckBackImage') || '';
+    // --- LOAD SAVED PREFERENCES ---
+    const lastFolder = game.user.getFlag(MODULE_ID, 'lastDeckFolder') || '';
+    const lastBackImg = game.user.getFlag(MODULE_ID, 'lastDeckBackImage') || '';
 
     // 1. Create Instance
     const dialog = new foundry.applications.api.DialogV2({
-      classes: ["mass-import"],
+      classes: [MODULE_ID],
       window: {
         title: "Import Folder to Card Deck",
         icon: "fas fa-cards",
@@ -38,7 +39,7 @@ export class DeckImporter {
     dialog.addEventListener('render', (event) => {
         const html = dialog.element;
 
-        // --- APLICAR PREFERÊNCIAS NOS INPUTS ---
+        // --- APPLY SAVED PREFERENCES TO INPUTS ---
         if (lastFolder) {
             const folderInput = html.querySelector("input[name='folder-path']");
             if(folderInput) {
@@ -72,11 +73,11 @@ export class DeckImporter {
     if (!folderPath) return ui.notifications.error("Select a folder path!");
 
     try {
-        // --- SALVAR AS ÚLTIMAS OPÇÕES USADAS ---
-        await game.user.setFlag('mass-import', 'lastDeckFolder', folderPath);
-        if (backImg) await game.user.setFlag('mass-import', 'lastDeckBackImage', backImg);
+        // --- SAVE LAST USED OPTIONS ---
+        await game.user.setFlag(MODULE_ID, 'lastDeckFolder', folderPath);
+        if (backImg) await game.user.setFlag(MODULE_ID, 'lastDeckBackImage', backImg);
 
-        const FilePickerClass = foundry.applications.apps.FilePicker.implementation;
+        const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
         const result = await FilePickerClass.browse(sourceData.activeSource, folderPath, { bucket: sourceData.activeBucket });
         
         const deck = await Cards.create({

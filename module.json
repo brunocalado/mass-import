@@ -5,13 +5,14 @@
   "authors": [
     {
       "name": "Mestre Digital",
-      "url": "https://www.youtube.com/c/MestreDigital"
+      "url": "https://www.youtube.com/@mestredigital",
+      "flags": {}
     }
   ],
-  "version": "0.2.4",
+  "version": "0.3.0",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13"
+    "minimum": "14",
+    "verified": "14"
   },
   "esmodules": ["./scripts/init.js"],
   "styles": ["styles/styles.css"],
