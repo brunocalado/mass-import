@@ -1,3 +1,7 @@
+# 0.3.2
+
+- [Changed] Added `Common.log()` calls to `SceneImporter.imageToScene`, `JournalImporter.imageToJournal`, and `DeckImporter.imageToDeck` — log helper now meets the ≥3 call-site threshold and provides a debug trail in the browser console when the debug setting is on
+
 # 0.3.1
 
 - https://github.com/brunocalado/mass-import/issues/17

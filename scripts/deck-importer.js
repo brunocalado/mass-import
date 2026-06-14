@@ -4,6 +4,7 @@ import { MODULE_ID } from './constants.js';
 export class DeckImporter {
 
   static async imageToDeck() {
+    Common.log('Deck Importer opened');
     const templatePath = `modules/${MODULE_ID}/templates/image-to-deck-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
     

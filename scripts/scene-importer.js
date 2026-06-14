@@ -4,6 +4,7 @@ import { MODULE_ID } from './constants.js';
 export class SceneImporter {
 
   static async imageToScene() {
+    Common.log('Scene Importer opened');
     const templatePath = `modules/${MODULE_ID}/templates/image-to-scene-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
 

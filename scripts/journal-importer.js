@@ -4,6 +4,7 @@ import { MODULE_ID } from './constants.js';
 export class JournalImporter {
 
   static async imageToJournal() {
+    Common.log('Journal Importer opened');
     const templatePath = `modules/${MODULE_ID}/templates/image-to-journal-dialog.hbs`;
     const htmlContent = await foundry.applications.handlebars.renderTemplate(templatePath, {});
     const sourceData = { activeSource: 'data', activeBucket: '', path: '' };
