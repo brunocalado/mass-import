@@ -554,3 +554,34 @@
 .application.mass-import .mi-levels-table:has(.mi-level-row) + .mi-levels-empty {
     display: none;
 }
+
+/* --- Normalize select height to match number/text inputs inside .mi-field grid cells ---
+   Without this, OS-native select chrome makes the dropdown taller than adjacent inputs. */
+.application.mass-import .mi-field > select {
+    height: var(--input-height, 30px);
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0 28px 0 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23aaa'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    cursor: pointer;
+}
+
+/* --- Hint text rendered below a mi-field input via <small> --- */
+.application.mass-import .mi-field > small {
+    font-size: 0.75rem;
+    color: var(--mi-text-muted);
+    font-style: italic;
+}
+
+/* --- Remove Foundry's orange outline/glow from buttons inside this module.
+   Foundry applies it on both :focus and .active, so both must be overridden. --- */
+.application.mass-import a.button:focus,
+.application.mass-import button:focus,
+.application.mass-import a.button.active,
+.application.mass-import button.active {
+    outline: none;
+    box-shadow: none;
+}

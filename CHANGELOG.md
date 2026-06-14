@@ -1,3 +1,15 @@
+# 0.3.5
+
+- [Fixed] Foundry's `button.active` orange border now also suppressed — the original fix only covered `:focus`; tab buttons (which receive `.active`) still showed the orange outline until this selector was added to the scoped override
+- [Fixed] Levels dialog — grid Type `<select>` height normalized to match the Size `<input>` beside it (`appearance: none` + explicit height)
+- [Changed] Levels dialog — Distance and Units columns constrained to compact fixed widths (120 px / 80 px) so Alpha range slider takes the remaining space instead of all three columns being equal
+- [Changed] Levels dialog — Floor Height field now shows an italic hint "Initial elevation per level" below the input to clarify its purpose
+- [Changed] Levels dialog — "Bg Color" label expanded to "Background Color"; field and Navigation checkbox restructured into a stacked inline layout for consistent vertical alignment
+
+# 0.3.4
+
+- [Fixed] Removed Foundry's default orange focus border (`outline` + `box-shadow`) from `<a class="button">` and `<button>` elements — fix is scoped to `.application.mass-import` so only this module's UI is affected; all other Foundry buttons are untouched
+
 # 0.3.3
 
 - [Added] Scene Importer **Levels mode** — a toggle switches between the default behavior (one Scene per image) and a new mode that merges every image in the folder into a **single Scene**, placing each image on its own V14 level. The chosen mode is remembered per user.
