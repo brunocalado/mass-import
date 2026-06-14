@@ -159,26 +159,43 @@ export class SceneImporter {
   }
 
   static async createScene(filePath, defaults) {
-    const tex = await foundry.canvas.loadTexture(filePath);
-    
-    // Safety check for dimensions
-    const width = tex.width || 1920; 
-    const height = tex.height || 1080;
+    const { width, height } = await SceneImporter.#getImageDimensions(filePath);
 
     const sceneData = {
       name: Common.splitPath(filePath),
       width: width,
       height: height,
-      background: { src: filePath },
+      initialLevel: "defaultLevel0000",
+      levels: [{
+        _id: "defaultLevel0000",
+        name: "Level",
+        background: { src: filePath }
+      }],
       grid: { ...defaults.grid },
       padding: 0.25,
       folder: defaults.folder,
-      fog: { exploration: defaults.fogExploration },
+      fog: { mode: defaults.fogExploration ? 1 : 0 },
       tokenVision: defaults.tokenVision,
       backgroundColor: defaults.backgroundColor,
       navigation: defaults.navigation
     };
 
     return await Scene.create(sceneData);
+  }
+
+  /**
+   * Resolves pixel dimensions of an image file using a browser Image element.
+   * Videos always return the fallback since Image cannot decode them.
+   * @param {string} src - Relative or absolute file path
+   * @returns {Promise<{width: number, height: number}>}
+   */
+  static async #getImageDimensions(src) {
+    if (Common.isValidVideo(src)) return { width: 1920, height: 1080 };
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ width: img.naturalWidth || 1920, height: img.naturalHeight || 1080 });
+      img.onerror = () => resolve({ width: 1920, height: 1080 });
+      img.src = src;
+    });
   }
 }

@@ -1,3 +1,10 @@
+# 0.3.1
+
+- https://github.com/brunocalado/mass-import/issues/17
+- [Fixed] Scene Importer now uses the V14 `levels` schema for background images — `Scene#background` is deprecated in V14 and silently discarded; background is now set on the default level via `levels[{ background: { src } }]` with `initialLevel` pointing to it
+- [Fixed] Scene Importer replaced `foundry.canvas.loadTexture` with a native `Image` element to read image dimensions — canvas texture loading requires an active scene and fails silently when none is loaded
+- [Fixed] Scene Importer fog field updated from deprecated `fog.exploration` (boolean) to `fog.mode` (number) per V14 schema
+
 # 0.3.0
 
 - [Changed] `MODULE_ID` extracted to `scripts/constants.js` — single source of truth imported across all scripts

@@ -92,4 +92,4 @@ Check the **Macros - Mass Import** compendium for these additional utilities:
 
 ## 📜 License
 
-* **Code License:** GNU GPLv3.
+* **Code License:** [GNU GPLv3](LICENSE).
