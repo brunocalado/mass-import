@@ -1,3 +1,9 @@
+# 0.3.3
+
+- [Added] Scene Importer **Levels mode** — a toggle switches between the default behavior (one Scene per image) and a new mode that merges every image in the folder into a **single Scene**, placing each image on its own V14 level. The chosen mode is remembered per user.
+- [Added] Levels mode per-level editor — **Scan** lists the folder's images as an editable table (level name, bottom/top elevation, and the initial level shown on load). A **Floor Height** field auto-assigns stacked elevations, and rows can be **dragged to reorder** (first image by natural name order = ground level). Scene dimensions are taken from the first image.
+- [Added] Levels mode UI — the dialog is split into **Scene** and **Levels** tabs with a compact layout to keep the window height manageable; the level table has a sticky header and scrolls.
+
 # 0.3.2
 
 - [Changed] Added `Common.log()` calls to `SceneImporter.imageToScene`, `JournalImporter.imageToJournal`, and `DeckImporter.imageToDeck` — log helper now meets the ≥3 call-site threshold and provides a debug trail in the browser console when the debug setting is on

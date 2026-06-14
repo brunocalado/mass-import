@@ -1,0 +1,18 @@
+{{#each levels}}
+<div class="mi-level-row" data-src="{{src}}">
+    <span class="mi-level-idx">{{idx}}</span>
+    {{#if isImage}}
+    <img class="mi-level-thumb" src="{{src}}" alt="">
+    {{else}}
+    <span class="mi-level-thumb mi-level-thumb--video"><i class="fas fa-film"></i></span>
+    {{/if}}
+    <input type="text" class="mi-level-name" value="{{name}}" title="Level name">
+    <input type="number" class="mi-level-bottom" value="{{bottom}}" title="Bottom elevation">
+    <input type="number" class="mi-level-top" value="{{top}}" title="Top elevation">
+    <label class="mi-level-start" title="Set as the level shown when the scene opens">
+        <input type="radio" name="initialLevel" {{#if first}}checked{{/if}}>
+        <i class="fas fa-star"></i>
+    </label>
+    <span class="mi-level-handle" title="Drag to reorder this level"><i class="fas fa-grip-vertical"></i></span>
+</div>
+{{/each}}

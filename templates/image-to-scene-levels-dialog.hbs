@@ -1,0 +1,101 @@
+<div class="mi-source-row">
+    <label>Folder</label>
+    <input type="text" name="folder-path" placeholder="modules/my-module/maps">
+    <button type="button" class="picker-button icon" title="Browse"><i class="fas fa-file-import"></i></button>
+    <button type="button" class="mi-scan-button" title="Scan the folder for images"><i class="fas fa-magnifying-glass"></i> Scan</button>
+</div>
+
+<nav class="mi-tabs">
+    <button type="button" class="mi-tab active" data-tab="scene"><i class="fas fa-cogs"></i> Scene</button>
+    <button type="button" class="mi-tab" data-tab="levels"><i class="fas fa-layer-group"></i> Levels</button>
+</nav>
+
+<section class="mi-tab-panel active" data-tab-panel="scene">
+    <div class="mi-grid-2">
+        <div class="mi-field">
+            <label>Scene Name</label>
+            <input type="text" id="sceneName" placeholder="Defaults to folder name">
+        </div>
+        <div class="mi-field">
+            <label>Target Folder Name</label>
+            <input type="text" id="folderName" value="Imported Scenes">
+        </div>
+    </div>
+
+    <div class="mi-grid-3">
+        <div class="mi-field">
+            <label title="Elevation span assigned to each level">Floor Height</label>
+            <input type="number" id="floor_height" value="{{defaultFloorHeight}}" min="1">
+        </div>
+        <div class="mi-field">
+            <label>Bg Color</label>
+            <input type="color" id="background_color" value="#000000" class="mi-color-picker">
+        </div>
+        <div class="mi-field mi-field-inline">
+            <input type="checkbox" name="select_navigation" id="select_navigation">
+            <label for="select_navigation">Navigation</label>
+        </div>
+    </div>
+
+    <h3 class="mi-form-header"><i class="fas fa-ruler-combined"></i> Grid</h3>
+    <div class="mi-grid-2">
+        <div class="mi-field">
+            <label>Type</label>
+            <select name="select_grid_type">
+                <option value="0">Gridless</option>
+                <option value="1" selected>Square</option>
+                <option value="2">Hex Row-Odd</option>
+                <option value="3">Hex Row-Even</option>
+                <option value="4">Hex Col-Odd</option>
+                <option value="5">Hex Col-Even</option>
+            </select>
+        </div>
+        <div class="mi-field">
+            <label>Size (px)</label>
+            <input type="number" id="grid_size" value="100" min="50">
+        </div>
+    </div>
+    <div class="mi-grid-3">
+        <div class="mi-field">
+            <label>Distance</label>
+            <input type="number" id="grid_distance" value="1.5" step="0.5">
+        </div>
+        <div class="mi-field">
+            <label>Units</label>
+            <input type="text" id="grid_units" value="m">
+        </div>
+        <div class="mi-field">
+            <label>Alpha</label>
+            <input type="range" id="grid_alpha" min="0" max="1" step="0.05" value="0.2">
+        </div>
+    </div>
+
+    <h3 class="mi-form-header"><i class="fas fa-lightbulb"></i> Lighting & Vision</h3>
+    <div class="mi-grid-2">
+        <div class="mi-field mi-field-inline">
+            <input type="checkbox" name="token_vision" id="token_vision" checked>
+            <label for="token_vision">Token Vision</label>
+        </div>
+        <div class="mi-field mi-field-inline">
+            <input type="checkbox" name="fog_exploration" id="fog_exploration" checked>
+            <label for="fog_exploration">Fog Exploration</label>
+        </div>
+    </div>
+</section>
+
+<section class="mi-tab-panel" data-tab-panel="levels">
+    <p class="mi-notes">The first image (natural name order) is the ground level; each image stacks upward as one level. Drag <i class="fas fa-grip-vertical"></i> to reorder. Scene size comes from the first image.</p>
+    <div class="mi-levels-table">
+        <div class="mi-level-head">
+            <span title="Level order">#</span>
+            <span></span>
+            <span>Name</span>
+            <span>Bottom</span>
+            <span>Top</span>
+            <span title="Level shown when the scene opens">Start</span>
+            <span title="Drag to reorder"><i class="fas fa-arrows-up-down"></i></span>
+        </div>
+        <div id="mi-levels-rows"></div>
+    </div>
+    <p class="mi-notes mi-levels-empty">Click <strong>Scan</strong> to load the folder's images.</p>
+</section>

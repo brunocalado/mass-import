@@ -320,3 +320,237 @@
     color: var(--mi-text-muted);
     font-style: italic;
 }
+
+/* ============================================================
+   Scene Importer — Levels mode (toggle, tabs, per-level table).
+   The toggle reuses the shared .sr-switch / .sr-slider control
+   defined above; mi- classes cover the importer-specific layout.
+   ============================================================ */
+
+/* --- Mode toggle banner at the top of the dialog --- */
+.application.mass-import .mi-mode-toggle {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--mi-border);
+    border-radius: 6px;
+}
+
+.application.mass-import .mi-toggle-text strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.application.mass-import .mi-toggle-text span {
+    font-size: 0.85rem;
+    color: var(--mi-text-muted) !important;
+    line-height: 1.4;
+}
+
+/* --- Source row: folder + browse + scan on one line --- */
+.application.mass-import .mi-source-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.application.mass-import .mi-source-row > label {
+    flex: 0 0 auto;
+    font-weight: bold;
+}
+
+.application.mass-import .mi-source-row input[type="text"] {
+    flex: 1 1 auto;
+}
+
+.application.mass-import .mi-source-row .picker-button {
+    flex: 0 0 auto;
+}
+
+.application.mass-import .mi-scan-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* --- Tabs --- */
+.application.mass-import .mi-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--mi-border);
+}
+
+.application.mass-import .mi-tab {
+    flex: 0 0 auto;
+    margin-bottom: -2px;
+    padding: 4px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--mi-text-muted) !important;
+    cursor: pointer;
+}
+
+.application.mass-import .mi-tab.active {
+    color: var(--mi-text) !important;
+    border-bottom-color: var(--mi-text);
+    font-weight: bold;
+}
+
+.application.mass-import .mi-tab-panel {
+    display: none;
+}
+
+.application.mass-import .mi-tab-panel.active {
+    display: block;
+}
+
+/* --- Compact field grids (kill the dead space) --- */
+.application.mass-import .mi-grid-2,
+.application.mass-import .mi-grid-3 {
+    display: grid;
+    gap: 6px 12px;
+    margin-bottom: 6px;
+    align-items: end;
+}
+
+.application.mass-import .mi-grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.application.mass-import .mi-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.application.mass-import .mi-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.application.mass-import .mi-field > label {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.application.mass-import .mi-field-inline {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--input-height, 30px);
+}
+
+.application.mass-import .mi-field-inline > label {
+    font-weight: normal;
+}
+
+.application.mass-import .mi-field-inline input[type="checkbox"] {
+    flex: 0 0 auto;
+}
+
+/* --- Per-level table: shared grid keeps header + rows aligned --- */
+.application.mass-import .mi-levels-table {
+    max-height: 320px;
+    overflow-y: auto;
+    margin-top: 6px;
+    border: 1px solid var(--mi-border);
+    border-radius: 4px;
+}
+
+.application.mass-import .mi-level-head,
+.application.mass-import .mi-level-row {
+    display: grid;
+    grid-template-columns: 1.8em 42px minmax(0, 1fr) 58px 58px 40px 26px;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+}
+
+.application.mass-import .mi-level-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--mi-bg);
+    border-bottom: 2px solid var(--mi-border);
+    font-size: 0.78rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--mi-text-muted) !important;
+}
+
+.application.mass-import .mi-level-row {
+    border-bottom: 1px solid var(--mi-border);
+}
+
+.application.mass-import .mi-level-row:last-child {
+    border-bottom: none;
+}
+
+.application.mass-import .mi-level-row.mi-dragging {
+    opacity: 0.4;
+}
+
+.application.mass-import .mi-level-idx {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--mi-text-muted) !important;
+}
+
+.application.mass-import .mi-level-thumb {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border: 1px solid var(--mi-border);
+    border-radius: 3px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Inputs occupy their grid cell instead of the base flex sizing. */
+.application.mass-import .mi-level-row input {
+    min-width: 0;
+}
+
+/* --- Start (initial level): the native radio is hidden; the star is its UI --- */
+.application.mass-import .mi-level-start {
+    margin: 0;
+    justify-self: center;
+    cursor: pointer;
+}
+
+.application.mass-import .mi-level-start input {
+    display: none;
+}
+
+.application.mass-import .mi-level-start i {
+    color: var(--mi-border);
+    transition: color 0.15s;
+}
+
+.application.mass-import .mi-level-start input:checked + i {
+    color: #e0a800;
+}
+
+/* --- Drag handle --- */
+.application.mass-import .mi-level-handle {
+    justify-self: center;
+    cursor: grab;
+    color: var(--mi-text-muted) !important;
+}
+
+.application.mass-import .mi-level-handle:active {
+    cursor: grabbing;
+}
+
+/* --- Empty-state hint disappears once rows are loaded --- */
+.application.mass-import .mi-levels-table:has(.mi-level-row) + .mi-levels-empty {
+    display: none;
+}

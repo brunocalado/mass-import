@@ -17,10 +17,11 @@ Stop dragging and dropping files one by one—import entire collections in secon
 
 ### 🗺️ Scene Importer
 
-Turn a folder of map images into configured Scenes instantly.
+Turn a folder of map images into configured Scenes instantly. A toggle switches between two modes:
 
-* **Bulk Creation:** Creates one Scene for each image in the folder.
-* **Configuration:** Set grid type, size, background color, and token vision settings once, and apply them to all imported scenes.
+* **Multiple Scenes (default):** Creates one Scene for each image in the folder.
+* **Single Scene with Levels:** Merges every image in the folder into one Scene, placing each image on its own **level** (Foundry VTT V14 feature) — ideal for multi-floor dungeons and buildings. Scan the folder to list the images, then name each level, set its bottom/top elevation (auto-filled from a **Floor Height** value), drag rows to reorder them, and pick the level shown when the scene opens. The first image (natural name order) becomes the ground level.
+* **Configuration:** Set grid type, size, background color, and token vision settings once, and apply them to all imported scenes (both modes).
 
 ### 🃏 Deck Importer
 
