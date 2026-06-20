@@ -1,0 +1,81 @@
+name: Publish Dev Release
+
+# Publishes a rolling GitHub Release (tag: dev or hotfix) with module.json + mass-import.zip.
+# No GitHub Pages. Install in Foundry via the manifest URL on that release.
+
+on:
+  push:
+    branches:
+      - hotfix/**
+      - supportS3
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Compute release channel
+        id: vars
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "supportS3" ]]; then
+            CHANNEL="dev"
+          else
+            CHANNEL="hotfix"
+          fi
+          echo "channel=$CHANNEL" >> $GITHUB_OUTPUT
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Configure CI build output
+        run: echo 'export default { userDataPath: "/nonexistent" }' > fvtt.config.js
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build module
+        run: npm run build
+
+      - name: Prepare release manifest
+        id: manifest
+        shell: bash
+        run: |
+          CHANNEL="${{ steps.vars.outputs.channel }}"
+          VERSION="${CHANNEL}+${SHORT_SHA}"
+          BASE="${{ github.server_url }}/${{ github.repository }}/releases/download/${CHANNEL}"
+          jq \
+            --arg version "$VERSION" \
+            --arg manifest "${BASE}/module.json" \
+            --arg download "${BASE}/mass-import.zip" \
+            '.version = $version | .manifest = $manifest | .download = $download' \
+            build/module.json > module.release.json
+          mv module.release.json build/module.json
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create module archive
+        shell: bash
+        run: |
+          cd build
+          zip -r ../mass-import.zip .
+          cd ..
+
+      - name: Create or update release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          makeLatest: false
+          prerelease: true
+          name: ${{ steps.vars.outputs.channel }} (${{ steps.manifest.outputs.version }})
+          tag: ${{ steps.vars.outputs.channel }}
+          artifacts: ./build/module.json, ./mass-import.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
