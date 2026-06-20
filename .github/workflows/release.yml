@@ -1,0 +1,106 @@
+name: Release
+# GitHub Actions workflow for creating a new FoundryVTT module release.
+#
+# Useful References:
+#   - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+#   - https://docs.github.com/en/actions/learn-github-actions/contexts
+#   - https://docs.github.com/en/actions/learn-github-actions/environment-variables
+#
+# Troubleshooting Checklist:
+#   - Is the module's manifest file valid JSON?
+#     You can test your manifest file using https://jsonlint.com/.
+#
+#   - Does the module's manifest have all the required keys?
+#     See https://foundryvtt.com/article/module-development/#manifest for more
+#     information.
+#
+#   - Are all the proper files and directories being included in the release's
+#     module archive ("module.zip")?
+#     Check that the correct files are being passed to the `zip` command run
+#     in the "Create Module Archive" step below.
+#
+#   - Is the release tag the proper format?
+#     See the comments for the "Extract Version From Tag" step below.
+#
+#   - Is a GitHub release being published?
+#     This workflow will only run when a release is published, not when a
+#     release is updated. Furthermore, note that while a GitHub release will
+#     (by default) create a repository tag, a repository tag will not create
+#     or publish a GitHub release.
+#
+#   - Has the module's entry on FoundryVTT's module administration site
+#     (https://foundryvtt.com/admin) been updated?
+#
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      # these are only needed for development
+      # - name: Install Dependencies
+      #   run: |
+      #     npm install
+      # - name: Build Module
+      #   run: |
+      #     npm run build
+
+      - name: Get Version from module.json
+        id: get_version_from_manifest
+        run: |
+          version=$(jq -r .version dist/module.json)
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "tag=v$version" >> $GITHUB_OUTPUT
+
+      - name: Modify Module Manifest With Release-Specific Values
+        id: sub_manifest_link_version
+        run: |
+          manifest_url="${{ github.server_url }}/${{ github.repository }}/releases/latest/download/module.json"
+          download_url="${{ github.server_url }}/${{ github.repository }}/releases/download/v${{ steps.get_version_from_manifest.outputs.version }}/module.zip"
+          tmp_file=$(mktemp)
+          jq \
+            --arg manifest "$manifest_url" \
+            --arg download "$download_url" \
+            '.manifest = $manifest | .download = $download' \
+            dist/module.json > "$tmp_file"
+          mv "$tmp_file" dist/module.json
+
+      - name: Prepare Module Directory
+        run: |
+          mkdir -p ./mass-import
+          [ -d dist ] && cp -r dist/* ./mass-import/
+
+      - name: Create Module Archive
+        run: |
+          zip  \
+            `# Options`                          \
+            --recurse-paths                      \
+            `# The name of the output file`      \
+             ./module.zip                        \
+            `# The files that will be included.` \
+            module.json                          \
+            LICENSE                              \
+            scripts/                             \
+            styles/                              \
+            templates/                            \
+
+      - name: Create or Update Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          name: v${{ steps.get_version_from_manifest.outputs.version }}
+          tag: v${{ steps.get_version_from_manifest.outputs.version }}
+          artifacts: './dist/module.json, ./module.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
