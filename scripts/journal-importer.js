@@ -13,6 +13,8 @@ export class JournalImporter {
     const savedConfig = game.user.getFlag(MODULE_ID, 'journalConfig') || {};
     const defaults = foundry.utils.mergeObject({
         path: '',
+        activeSource: 'data',
+        activeBucket: '',
         mode: 0,
         journalName: 'Mass Import Journal',
         folderName: 'Mass Import',
@@ -48,8 +50,10 @@ export class JournalImporter {
         // Populate inputs with saved defaults
         if (defaults.path) {
             html.querySelector("input[name='folder-path']").value = defaults.path;
-            sourceData.path = defaults.path; 
+            sourceData.path = defaults.path;
         }
+        sourceData.activeSource = defaults.activeSource || 'data';
+        sourceData.activeBucket = defaults.activeBucket || '';
         
         const modeSelect = html.querySelector("select[name='select_import_type']");
         if (modeSelect) modeSelect.value = defaults.mode;
@@ -86,8 +90,12 @@ export class JournalImporter {
     const config = JournalImporter.extractConfig(html);
     if (!config.path) return ui.notifications.error("Path is required.");
 
-    // Save preferences for next time
-    await game.user.setFlag(MODULE_ID, 'journalConfig', config);
+    // Save preferences for next time (include browse source for S3)
+    await game.user.setFlag(MODULE_ID, 'journalConfig', {
+      ...config,
+      activeSource: sourceData.activeSource,
+      activeBucket: sourceData.activeBucket
+    });
 
     try {
         const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;

@@ -21,8 +21,20 @@ export class SceneImporter {
     };
 
     // --- LOAD SAVED PREFERENCES ---
-    const lastFolder = game.user.getFlag(MODULE_ID, 'lastSceneFolder') || '';
+    const lastScenePref = game.user.getFlag(MODULE_ID, 'lastSceneFolder');
+    let lastFolder = '';
+    let lastSource = 'data';
+    let lastBucket = '';
+    if (typeof lastScenePref === 'string') {
+      lastFolder = lastScenePref;
+    } else if (lastScenePref && typeof lastScenePref === 'object') {
+      lastFolder = lastScenePref.path || '';
+      lastSource = lastScenePref.activeSource || 'data';
+      lastBucket = lastScenePref.activeBucket || '';
+    }
     if (lastFolder) sourceData.path = lastFolder;
+    sourceData.activeSource = lastSource;
+    sourceData.activeBucket = lastBucket;
     const startMode = game.user.getFlag(MODULE_ID, 'sceneImportMode') === 'levels' ? 'levels' : 'standard';
 
     // Shell = persistent mode toggle + a body whose innerHTML is swapped on toggle.
@@ -312,7 +324,11 @@ export class SceneImporter {
 
     try {
       // --- SAVE LAST USED FOLDER ---
-      await game.user.setFlag(MODULE_ID, 'lastSceneFolder', folderPath);
+      await game.user.setFlag(MODULE_ID, 'lastSceneFolder', {
+        path: folderPath,
+        activeSource: sourceData.activeSource,
+        activeBucket: sourceData.activeBucket
+      });
 
       // Find or Create Folder
       let folder = game.folders.find(f => f.name === folderName && f.type === "Scene");
@@ -403,7 +419,11 @@ export class SceneImporter {
 
     try {
       // --- SAVE LAST USED FOLDER ---
-      await game.user.setFlag(MODULE_ID, 'lastSceneFolder', folderPath);
+      await game.user.setFlag(MODULE_ID, 'lastSceneFolder', {
+        path: folderPath,
+        activeSource: sourceData.activeSource,
+        activeBucket: sourceData.activeBucket
+      });
 
       // Find or Create Folder
       let folder = game.folders.find(f => f.name === folderName && f.type === "Scene");

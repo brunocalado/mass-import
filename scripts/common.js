@@ -72,10 +72,10 @@ export class Common {
         current: input.value,
         callback: (path) => {
           input.value = path;
-          if (sourceData && FilePickerClass.lastBrowse) {
-             sourceData.activeSource = FilePickerClass.lastBrowse.source;
-             sourceData.activeBucket = FilePickerClass.lastBrowse.bucket;
-             sourceData.path = path;
+          if (sourceData) {
+            sourceData.activeSource = fp.activeSource;
+            sourceData.activeBucket = fp.source?.bucket ?? '';
+            sourceData.path = path;
           }
         }
       });
