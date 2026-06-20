@@ -60,7 +60,7 @@ jobs:
       - name: Get Version from module.json
         id: get_version_from_manifest
         run: |
-          version=$(jq -r .version dist/module.json)
+          version=$(jq -r .version ./module.json)
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "tag=v$version" >> $GITHUB_OUTPUT
 
@@ -74,13 +74,8 @@ jobs:
             --arg manifest "$manifest_url" \
             --arg download "$download_url" \
             '.manifest = $manifest | .download = $download' \
-            dist/module.json > "$tmp_file"
-          mv "$tmp_file" dist/module.json
-
-      - name: Prepare Module Directory
-        run: |
-          mkdir -p ./mass-import
-          [ -d dist ] && cp -r dist/* ./mass-import/
+            ./module.json > "$tmp_file"
+          mv "$tmp_file" ./module.json
 
       - name: Create Module Archive
         run: |
@@ -94,6 +89,7 @@ jobs:
             LICENSE                              \
             scripts/                             \
             styles/                              \
+            packs/                            \
             templates/                            \
 
       - name: Create or Update Release
@@ -102,5 +98,5 @@ jobs:
           allowUpdates: true
           name: v${{ steps.get_version_from_manifest.outputs.version }}
           tag: v${{ steps.get_version_from_manifest.outputs.version }}
-          artifacts: './dist/module.json, ./module.zip'
+          artifacts: './module.json, ./module.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
