@@ -1,5 +1,8 @@
 name: Publish Dev Release
 
+# Publishes a rolling GitHub Release (tag: dev or hotfix) with module.json + mass-import.zip.
+# No GitHub Pages. Install in Foundry via the manifest URL on that release.
+
 on:
   push:
     branches:
@@ -8,92 +11,70 @@ on:
       - supportS3
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout source repo
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v6
 
-      - name: Compute branch folder
+      - name: Compute release channel
         id: vars
         shell: bash
         run: |
           BRANCH="${GITHUB_REF#refs/heads/}"
-
-          if [[ "$BRANCH" == "main" ]]; then
-            TARGET="dev"
-            NON_TARGET="hotfix"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "supportS3" ]]; then
+            CHANNEL="dev"
           else
-            TARGET="hotfix"
-            NON_TARGET="dev"
+            CHANNEL="hotfix"
           fi
-
-          echo "target=$TARGET" >> $GITHUB_OUTPUT
-          echo "non_target=$NON_TARGET" >> $GITHUB_OUTPUT
-
-      - name: Set version
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          echo "channel=$CHANNEL" >> $GITHUB_OUTPUT
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Prepare release manifest
+        id: manifest
         shell: bash
         run: |
-          TARGET="${{ steps.vars.outputs.target }}"
-          VERSION="${TARGET}+${SHORT_SHA}"
-          BASE="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${TARGET}"
+          CHANNEL="${{ steps.vars.outputs.channel }}"
+          VERSION="${CHANNEL}+${SHORT_SHA}"
+          BASE="${{ github.server_url }}/${{ github.repository }}/releases/download/${CHANNEL}"
           jq \
             --arg version "$VERSION" \
-            --arg download "${BASE}/mass-import.zip" \
             --arg manifest "${BASE}/module.json" \
-            '.version = $version | .download = $download | .manifest = $manifest' \
+            --arg download "${BASE}/mass-import.zip" \
+            '.version = $version | .manifest = $manifest | .download = $download' \
             module.json > module.release.json
           mv module.release.json module.json
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Zip module
+      - name: Create module archive
         shell: bash
         run: |
           zip -r mass-import.zip . \
+            -x "mass-import.zip" \
             -x ".*" \
             -x "build/*" \
             -x "node_modules/*" \
-            -x "site/*" \
             -x "package.json" \
             -x "package-lock.json" \
             -x "webpack.config.js" \
             -x "fvtt.config.js" \
             -x "fvtt.config.example.js"
 
-      - name: Create site structure
-        shell: bash
-        run: |
-          mkdir -p site/dev site/hotfix
-
-          NON_TARGET="${{ steps.vars.outputs.non_target }}"
-          TARGET="${{ steps.vars.outputs.target }}"
-          URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${NON_TARGET}"
-
-          wget -q -O "site/${NON_TARGET}/mass-import.zip" "${URL}/mass-import.zip" || true
-          wget -q -O "site/${NON_TARGET}/module.json" "${URL}/module.json" || true
-
-          cp module.json mass-import.zip "site/${TARGET}/"
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Create or update release
+        uses: ncipollo/release-action@v1
         with:
-          path: site
-
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+          allowUpdates: true
+          makeLatest: ${{ steps.vars.outputs.channel == 'dev' }}
+          prerelease: true
+          name: ${{ steps.vars.outputs.channel }} (${{ steps.manifest.outputs.version }})
+          tag: ${{ steps.vars.outputs.channel }}
+          artifacts: ./module.json, ./mass-import.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
