@@ -1,3 +1,10 @@
+# 0.3.6
+
+- [Fixed] Cloud storage (Amazon S3 / The Forge) importing — the FilePicker callback read a non-existent `FilePicker.lastBrowse` static, so the active source was always stuck on `data`. Browsing an S3/Forge folder silently listed the local `data` source instead, returning "no files found". The callback now reads the picker instance (`fp.activeSource` / `fp.source.bucket`), so Scene, Journal, and Deck importers correctly browse and import from non-`data` sources. Local-only setups are unaffected (source stays `data`, bucket stays empty).
+- [Added] Source persistence — Scene and Journal importers now remember the chosen source and bucket (not just the path) across sessions; Deck importer updated to match.
+- [Changed] `lastSceneFolder` and `lastDeckFolder` user flags migrated from a plain path string to an object (`{ path, activeSource, activeBucket }`), with backward-compatible reading of the legacy string format so existing saved paths keep working.
+- [Changed] README updated to document cloud storage support (local data / Amazon S3 / The Forge's Assets Library).
+
 # 0.3.5
 
 - [Fixed] Foundry's `button.active` orange border now also suppressed — the original fix only covered `:focus`; tab buttons (which receive `.active`) still showed the orange outline until this selector was added to the scoped override

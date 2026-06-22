@@ -1,8 +1,10 @@
 # Mass Import
 
-**Mass Import** streamlines your world-building process in Foundry VTT. It allows you to select a local folder containing images, videos, or PDFs and automatically converts them into Foundry entities such as Scenes, Journals, or Card Decks.
+**Mass Import** streamlines your world-building process in Foundry VTT. It allows you to select a folder containing images, videos, or PDFs and automatically converts them into Foundry entities such as Scenes, Journals, or Card Decks.
 
 Stop dragging and dropping files one by one—import entire collections in seconds.
+
+> ☁️ **Cloud storage ready:** Import directly from your **local data**, an **Amazon S3** bucket, or **The Forge's Assets Library**. Just pick the source in the file browser when choosing your folder — Mass Import detects the active source/bucket and remembers it for next time.
 
 <video src="https://github.com/user-attachments/assets/ad55324a-3063-4516-aa31-7ed71e4b106d" 
        controls 
@@ -63,6 +65,7 @@ https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json
 ## 🛠️ How to Use
 
 ### 1. Using the Launcher (Recommended)
+
 This module includes a **Macros - Mass Import** compendium with ready-to-use macros.
 
 Alternatively, create a script macro with this simple command to open the launcher menu:
@@ -71,6 +74,7 @@ MassImport.showImporters();
 ```
 
 ### 2. Using the API
+
 You can also call the importers directly via the browser console or your own scripts using the global `MassImport` object:
 
 ```javascript
@@ -81,6 +85,7 @@ MassImport.SceneRescaler();
 ```
 
 ## 🧰 Included Macros
+
 Check the **Macros - Mass Import** compendium for these additional utilities:
 
 * **Regenerate Thumbnails:** Allows you to quickly regenerate thumbnails for imported scenes.
@@ -91,6 +96,11 @@ Check the **Macros - Mass Import** compendium for these additional utilities:
 * **Suggestions:** Have an idea to improve this module? [Share it here!](https://github.com/brunocalado/mass-import/issues)
 * **Bug Reports:** Found an issue? [Report it here!](https://github.com/brunocalado/mass-import/issues)
 
+### 💎 Contributors
+
+* [@Achoobert](https://github.com/Achoobert)
+
 ## 📜 License
 
 * **Code License:** [GNU GPLv3](LICENSE).
+

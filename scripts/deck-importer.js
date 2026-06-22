@@ -11,7 +11,17 @@ export class DeckImporter {
     const sourceData = { activeSource: 'data', activeBucket: '', path: '' };
 
     // --- LOAD SAVED PREFERENCES ---
-    const lastFolder = game.user.getFlag(MODULE_ID, 'lastDeckFolder') || '';
+    // lastDeckFolder may be a legacy plain string (path only) or an object
+    // carrying the browse source/bucket for S3. Handle both for back-compat.
+    const lastDeckPref = game.user.getFlag(MODULE_ID, 'lastDeckFolder');
+    let lastFolder = '';
+    if (typeof lastDeckPref === 'string') {
+      lastFolder = lastDeckPref;
+    } else if (lastDeckPref && typeof lastDeckPref === 'object') {
+      lastFolder = lastDeckPref.path || '';
+      sourceData.activeSource = lastDeckPref.activeSource || 'data';
+      sourceData.activeBucket = lastDeckPref.activeBucket || '';
+    }
     const lastBackImg = game.user.getFlag(MODULE_ID, 'lastDeckBackImage') || '';
 
     // 1. Create Instance
@@ -75,7 +85,11 @@ export class DeckImporter {
 
     try {
         // --- SAVE LAST USED OPTIONS ---
-        await game.user.setFlag(MODULE_ID, 'lastDeckFolder', folderPath);
+        await game.user.setFlag(MODULE_ID, 'lastDeckFolder', {
+            path: folderPath,
+            activeSource: sourceData.activeSource,
+            activeBucket: sourceData.activeBucket
+        });
         if (backImg) await game.user.setFlag(MODULE_ID, 'lastDeckBackImage', backImg);
 
         const FilePickerClass = foundry.applications.apps.FilePicker.implementation ?? foundry.applications.apps.FilePicker;
