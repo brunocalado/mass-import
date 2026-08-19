@@ -13,7 +13,7 @@ Stop dragging and dropping files one by one—import entire collections in secon
        loop 
        muted></video>
 
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-red?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/mestredigital)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-Donate-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/mestredigital) [![More Modules](https://img.shields.io/badge/Foundry%20VTT-More%20Modules-red?style=for-the-badge&logo=gamepad)](https://mestredigital.online/pages/projetos-en)
 
 ## 🚀 Key Features
 
@@ -90,6 +90,10 @@ Check the **Macros - Mass Import** compendium for these additional utilities:
 
 * **Regenerate Thumbnails:** Allows you to quickly regenerate thumbnails for imported scenes.
 * **Universal Scene Rescaler:** Batch updates the Grid Distance, Grid Units, Light radius, and Sound radius for the current scene in a single click.
+
+## ❓ Help
+
+Need a refresher on any of the importers? Go to **Configure Settings → Module Settings → Mass Import Folder** and click **Open Instructions** for an in-app guide (with screenshots) to the Scene, Deck, and Journal importers.
 
 ## 🤝 Community & Support
 

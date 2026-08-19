@@ -1,3 +1,11 @@
+/*!
+ * Mass Import Folder
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
 import { MODULE_ID } from './constants.js';
 
 /**

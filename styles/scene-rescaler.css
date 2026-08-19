@@ -1,0 +1,189 @@
+/*!
+ * Mass Import Folder
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
+/* ============================================================
+   Scene Rescaler — scoped under .application.mass-import
+   Uses sr- prefix to avoid collisions with importer classes.
+   Depends on the --mi-* variables and .sr-switch/.sr-slider
+   tokens defined in base.css.
+   ============================================================ */
+
+/* --- Warning box ---
+   Layout: icon + title on the same row (flex), then the explanatory
+   span drops below and stretches to full width via flex-wrap. */
+.application.mass-import .sr-alert-box {
+    background-color: rgba(229, 34, 34, 0.1);
+    border: 1px solid #e52222;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-bottom: 10px;
+}
+
+.application.mass-import .sr-alert-box > i {
+    color: #e52222;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+/* .sr-alert-text wraps tightly to the icon on the first line,
+   then the inner <span> breaks to a new row at full width. */
+.application.mass-import .sr-alert-text {
+    display: contents;
+}
+
+.application.mass-import .sr-alert-text strong {
+    color: #e52222;
+    white-space: nowrap;
+}
+
+/* width: 100% forces the span onto its own line below icon + title */
+.application.mass-import .sr-alert-text span {
+    width: 100%;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--mi-text-muted);
+}
+
+/* --- Generic panel --- */
+.application.mass-import .sr-panel {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--mi-border);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+/* --- Toggle switch --- */
+.application.mass-import .sr-toggle-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.application.mass-import .sr-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.application.mass-import .sr-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.application.mass-import .sr-slider {
+    position: absolute;
+    inset: 0;
+    background-color: #555;
+    border: 1px solid #333;
+    border-radius: 24px;
+    transition: background-color 0.25s;
+    cursor: pointer;
+}
+
+.application.mass-import .sr-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: transform 0.25s, background-color 0.25s;
+}
+
+.application.mass-import .sr-switch input:checked + .sr-slider {
+    background-color: #4baf4f;
+}
+
+.application.mass-import .sr-switch input:checked + .sr-slider::before {
+    transform: translateX(20px);
+    background-color: #fff;
+}
+
+.application.mass-import .sr-toggle-text strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.application.mass-import .sr-toggle-text span {
+    font-size: 0.85rem;
+    color: var(--mi-text-muted);
+    line-height: 1.4;
+}
+
+/* --- Uniform height for select and inputs in the rescaler ---
+   Windows renders <select> with OS-native chrome that ignores height.
+   appearance: none strips the native widget so height/padding apply normally.
+   The dropdown arrow is restored via a CSS background chevron. */
+.application.mass-import .sr-field-group input[type="number"],
+.application.mass-import .sr-field-group input[type="text"] {
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    color: var(--mi-input-text) !important;
+    background-color: var(--mi-input-bg) !important;
+    border: 1px solid var(--mi-border) !important;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.application.mass-import .sr-field-group select {
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 28px 0 8px;
+    color: var(--mi-input-text) !important;
+    background-color: var(--mi-input-bg) !important;
+    border: 1px solid var(--mi-border) !important;
+    border-radius: 4px;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23aaa'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    cursor: pointer;
+}
+
+/* --- Two-column form grid inside .sr-panel --- */
+.application.mass-import .sr-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.application.mass-import .sr-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.application.mass-import .sr-field-group.sr-full-width {
+    grid-column: span 2;
+}
+
+.application.mass-import .sr-field-group > label {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.application.mass-import .sr-field-group > small {
+    font-size: 0.8rem;
+    color: var(--mi-text-muted);
+    font-style: italic;
+}

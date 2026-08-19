@@ -9,25 +9,37 @@
       "flags": {}
     }
   ],
-  "version": "0.3.6",
+  "version": "0.3.7",
   "compatibility": {
     "minimum": "14",
-    "verified": "14"
+    "verified": "14",
+    "maximum": "14"
   },
-  "esmodules": ["./scripts/init.js"],
-  "styles": ["styles/styles.css"],
+  "esmodules": [
+    "scripts/init.js"
+  ],
+  "styles": [
+    {
+      "src": "styles/base.css"
+    },
+    {
+      "src": "styles/scene-importer.css"
+    },
+    {
+      "src": "styles/scene-rescaler.css"
+    }
+  ],
   "packs": [
     {
       "label": "Macros - Mass Import",
       "type": "Macro",
       "name": "macros-mass-import",
-      "path": "packs/macros-mass-import.db"
-    },
-    {
-      "label": "Journal - Mass Import",
-      "type": "JournalEntry",
-      "name": "journal-mass-import",
-      "path": "packs/journal-mass-import.db"
+      "path": "packs/macros-mass-import",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "packFolders": [
@@ -36,13 +48,13 @@
       "sorting": "a",
       "color": "#9f1d1d",
       "packs": [
-        "macros-mass-import",
-        "journal-mass-import"
+        "macros-mass-import"
       ],
       "folders": []
     }
-  ],  
+  ],
   "url": "https://github.com/brunocalado/mass-import",
   "manifest": "https://raw.githubusercontent.com/brunocalado/mass-import/main/module.json",
-  "download": "https://codeload.github.com/brunocalado/mass-import/zip/main"
+  "download": "https://codeload.github.com/brunocalado/mass-import/zip/main",
+  "flags": {}
 }

@@ -1,3 +1,9 @@
+# 0.3.7
+
+- [Added] "How to Use" button in the module's Settings entry (Configure Settings → Mass Import Folder), opening an in-app instructions window (Scene/Deck/Journal Import, each with its screenshot and notes) instead of a world-visible compendium. Also reachable via `MassImport.help()`.
+- [Removed] The "Journal - Mass Import" compendium — its content moved into the new Help window above; the pack no longer ships with the module.
+- [Changed] Stylesheet split from a single `styles/styles.css` into `styles/base.css` (shared `--mi-*` variables, form components used by the Deck/Journal/Scene dialogs, and the button focus-outline reset), `styles/scene-importer.css` (Levels mode: toggle, tabs, per-level table), and `styles/scene-rescaler.css` (`sr-*` rules) — no visual or behavioral change, all CSS rules preserved as-is.
+
 # 0.3.6
 
 - [Fixed] Cloud storage (Amazon S3 / The Forge) importing — the FilePicker callback read a non-existent `FilePicker.lastBrowse` static, so the active source was always stuck on `data`. Browsing an S3/Forge folder silently listed the local `data` source instead, returning "no files found". The callback now reads the picker instance (`fp.activeSource` / `fp.source.bucket`), so Scene, Journal, and Deck importers correctly browse and import from non-`data` sources. Local-only setups are unaffected (source stays `data`, bucket stays empty).

@@ -1,0 +1,217 @@
+/*!
+ * Mass Import Folder
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
+/* ============================================================
+   Mass Import — Base styles
+   Scoped under .application.mass-import (AppV2 root element).
+   Module-owned CSS variables (--mi-*) with hardcoded values,
+   to prevent system CSS from making text unreadable.
+   Shared form components used across the deck, journal, and
+   scene importer dialogs. App-specific rules live in their own
+   styles/<app-name>.css file.
+   ============================================================ */
+
+/* --- Module palette on the application root ---
+   Hardcoded values ensure readability regardless of what
+   a game system does to Foundry's native CSS variables. */
+.application.mass-import {
+    --mi-text: #e0ddd4;
+    --mi-text-muted: #a8a49a;
+    --mi-input-bg: #1a1a1a;
+    --mi-input-text: #f0ede2;
+    --mi-border: #555;
+    --mi-bg: #242424;
+}
+
+/* --- Force both background AND text on window-content ---
+   Controls the full visual context so the dialog is always
+   readable regardless of the system's color scheme. */
+.application.mass-import .window-content {
+    background-color: var(--mi-bg) !important;
+    color: var(--mi-text) !important;
+}
+
+.application.mass-import label,
+.application.mass-import h3,
+.application.mass-import p {
+    color: inherit !important;
+}
+
+/* --- Section header --- */
+.application.mass-import .mi-form-header {
+    margin-bottom: 0.5rem;
+    margin-top: 10px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid var(--mi-border);
+    font-size: 1rem;
+    font-family: var(--font-header, serif);
+}
+
+.application.mass-import .mi-form-header:first-child {
+    margin-top: 0;
+}
+
+/* --- Form row --- */
+.application.mass-import .mi-form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.application.mass-import .mi-form-group > label:first-child {
+    flex: 0 0 140px;
+    font-weight: bold;
+}
+
+/* --- Field container --- */
+.application.mass-import .mi-form-fields {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.application.mass-import .mi-form-fields > label {
+    white-space: nowrap;
+}
+
+/* --- Inputs and selects --- */
+.application.mass-import input[type="text"],
+.application.mass-import input[type="number"],
+.application.mass-import select {
+    flex: 1;
+    min-width: 0;
+    color: var(--mi-input-text) !important;
+    background-color: var(--mi-input-bg) !important;
+    border: 1px solid var(--mi-border) !important;
+}
+
+/* --- Checkbox label --- */
+.application.mass-import label.mi-checkbox {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0;
+    white-space: nowrap;
+    font-weight: normal;
+}
+
+/* --- FilePicker row --- */
+.application.mass-import .mi-picker-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* --- Notes / hint text --- */
+.application.mass-import .mi-notes {
+    font-size: 0.75rem;
+    color: var(--mi-text-muted) !important;
+    margin: 2px 0 0;
+    font-style: italic;
+}
+
+/* --- Flex utilities (replaces inline styles) --- */
+.application.mass-import .mi-flex-1 {
+    flex: 1;
+}
+
+.application.mass-import .mi-flex-2 {
+    flex: 2;
+}
+
+/* --- Color picker input --- */
+.application.mass-import .mi-color-picker {
+    height: 24px;
+    width: 40px;
+    padding: 0;
+    border: none;
+    flex: 0 0 auto;
+}
+
+/* --- Alpha slider group --- */
+.application.mass-import .mi-alpha-group {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.application.mass-import .mi-alpha-group label {
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+/* --- Tabs — shared by the Scene Importer (Levels mode) and the Help dialog --- */
+.application.mass-import .mi-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--mi-border);
+}
+
+.application.mass-import .mi-tab {
+    flex: 0 0 auto;
+    margin-bottom: -2px;
+    padding: 4px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--mi-text-muted) !important;
+    cursor: pointer;
+}
+
+.application.mass-import .mi-tab.active {
+    color: var(--mi-text) !important;
+    border-bottom-color: var(--mi-text);
+    font-weight: bold;
+}
+
+.application.mass-import .mi-tab-panel {
+    display: none;
+}
+
+.application.mass-import .mi-tab-panel.active {
+    display: block;
+}
+
+/* --- Help dialog: window-content is a flex box with overflow: hidden by
+   core CSS, so the part root has to be the scrolling region itself. --- */
+.application.mass-import .mi-help-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* --- Help dialog panels: enriched compendium-style content --- */
+.application.mass-import .mi-help-panel img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--mi-border);
+    border-radius: 4px;
+    margin: 6px 0;
+}
+
+.application.mass-import .mi-help-panel h2 {
+    font-size: 1rem;
+    margin: 0.75rem 0 0.25rem;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--mi-border);
+}
+
+/* --- Remove Foundry's orange outline/glow from buttons inside this module.
+   Foundry applies it on both :focus and .active, so both must be overridden. --- */
+.application.mass-import a.button:focus,
+.application.mass-import button:focus,
+.application.mass-import a.button.active,
+.application.mass-import button.active {
+    outline: none;
+    box-shadow: none;
+}
